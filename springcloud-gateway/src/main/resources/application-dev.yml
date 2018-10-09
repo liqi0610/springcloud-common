@@ -15,6 +15,10 @@ spring:
           predicates:
             - Path=/demo/**
           filters:
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
             - StripPrefix=1
             - AddResponseHeader=X-Response-Default-Foo, Default-Bar
   #设置访问eureka用户名密码
