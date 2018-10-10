@@ -38,3 +38,10 @@ eureka:
 logging:
   level:
     org.springframework.cloud.gateway: debug
+
+# 设置熔断时间
+hystrix:
+  command:
+    # 跟上面的args中的name一样
+    fallbackcmd:
+      execution.isolation.thread.timeoutInMilliseconds: 5000
