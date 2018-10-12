@@ -77,7 +77,7 @@ public class CustomRemoteTokenServices {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(OAuth2AccessToken.AUTHORIZATION,getAuthorizationHeader(clientId,clientSecret));
 
-        ServiceInstance serviceInstance = loadBalancerClient.choose("auth");
+        ServiceInstance serviceInstance = loadBalancerClient.choose("auth-server");
         if(serviceInstance == null) {
             throw new RuntimeException("Failed to choose an auth instance.");
         }
