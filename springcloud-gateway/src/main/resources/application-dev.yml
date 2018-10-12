@@ -45,3 +45,20 @@ hystrix:
     # 跟上面的args中的name一样
     fallbackcmd:
       execution.isolation.thread.timeoutInMilliseconds: 5000
+
+auth:
+  permitall:
+    -
+      pattern: /login/**
+    -
+      pattern: /web/public/**
+
+security:
+  oauth2:
+    client:
+      accessTokenUri: /oauth/token
+      clientId: gateway
+      clientSecret: gateway
+    resource:
+      userInfoUri: /user
+      token-info-uri: /oauth/check_token
