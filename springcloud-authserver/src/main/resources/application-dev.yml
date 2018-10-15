@@ -7,7 +7,7 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/auth_test?useUnicode=true&characterEncoding=UTF-8&useSSL=true
+      url: jdbc:mysql://127.0.0.1:3306/db_nsop_dev?useUnicode=true&characterEncoding=UTF-8&useSSL=true
       username: root
       password: root
       initial-size: 1
@@ -25,7 +25,7 @@ spring:
       remove-abandoned-timeout: 1800
       log-abandoned: true
   redis:
-    database: 2
+    database: 1
     host: 127.0.0.1
     port: 6379
     # password:
@@ -76,3 +76,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+
+logging:
+  level:
+    org.springframework: debug

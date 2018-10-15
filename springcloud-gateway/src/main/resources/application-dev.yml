@@ -11,7 +11,7 @@ spring:
       routes:
         - id: service_demo
           uri: lb://DEMO
-          order: 0
+          order: 7000
           predicates:
             - Path=/demo/**
           filters:
@@ -23,11 +23,11 @@ spring:
             - AddResponseHeader=X-Response-Default-Foo, Default-Bar
         - id: service_auth
           uri: lb://AUTH-SERVER
-          order: 1
+          order: 8000
           predicates:
-          - Path=/login/**
+            - Path=/login/**
           filters:
-          - StripPrefix=1
+            - StripPrefix=1
   #设置访问eureka用户名密码
   security:
     user:
