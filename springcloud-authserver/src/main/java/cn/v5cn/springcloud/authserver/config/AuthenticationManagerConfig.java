@@ -1,3 +1,4 @@
+/*
 package cn.v5cn.springcloud.authserver.config;
 
 import cn.v5cn.springcloud.authserver.security.CustomAuthenticationProvider;
@@ -17,3 +18,4 @@ public class AuthenticationManagerConfig extends GlobalAuthenticationConfigurerA
         auth.authenticationProvider(customAuthenticationProvider);
     }
 }
+*/

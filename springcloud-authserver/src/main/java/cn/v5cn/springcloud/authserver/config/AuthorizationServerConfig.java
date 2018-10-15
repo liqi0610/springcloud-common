@@ -17,12 +17,10 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableAuthorizationServer
@@ -98,10 +96,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
-                //.tokenServices(authorizationServerTokenServices())
+                .tokenServices(authorizationServerTokenServices())
                 .accessTokenConverter(accessTokenConverter())
+                //.userDetailsService(clientDetailsService(dataSource))
                 .exceptionTranslator(webResponseExceptionTranslator());
-
+        /*endpoints.setClientDetailsService(clientDetailsService(dataSource));
         // 配置TokenServices参数
         DefaultTokenServices tokenServices = (DefaultTokenServices) endpoints.getDefaultAuthorizationServerTokenServices();
         tokenServices.setTokenStore(endpoints.getTokenStore());
@@ -110,17 +109,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
         //30天(int)
         tokenServices.setAccessTokenValiditySeconds(Long.valueOf(TimeUnit.DAYS.toSeconds(30)).intValue());
-        endpoints.tokenServices(tokenServices);
+        endpoints.tokenServices(tokenServices);*/
     }
 
-    /*@Bean
+    @Bean
     public AuthorizationServerTokenServices authorizationServerTokenServices() {
-        *//*CustomAuthorizationTokenServices customTokenServices = new CustomAuthorizationTokenServices();
+        CustomAuthorizationTokenServices customTokenServices = new CustomAuthorizationTokenServices();
         customTokenServices.setTokenStore(tokenStore());
         customTokenServices.setSupportRefreshToken(true);
         customTokenServices.setReuseRefreshToken(true);
         customTokenServices.setClientDetailsService(clientDetailsService(dataSource));
         customTokenServices.setTokenEnhancer(accessTokenConverter());
-        return customTokenServices;*//*
-    }*/
+        return customTokenServices;
+    }
 }

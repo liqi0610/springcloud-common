@@ -21,6 +21,13 @@ spring:
                 fallbackUri: forward:/fallback
             - StripPrefix=1
             - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+        - id: service_auth
+          uri: lb://AUTH-SERVER
+          order: 1
+          predicates:
+          - Path=/login/**
+          filters:
+          - StripPrefix=1
   #设置访问eureka用户名密码
   security:
     user:
