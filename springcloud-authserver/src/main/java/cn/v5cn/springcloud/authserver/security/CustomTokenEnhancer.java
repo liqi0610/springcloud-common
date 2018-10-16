@@ -28,7 +28,7 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter implements Seri
         DefaultOAuth2AccessToken customAccessToken = new DefaultOAuth2AccessToken(accessToken);
         customAccessToken.setAdditionalInformation(info);
 
-        OAuth2AccessToken enhance = super.enhance(accessToken, authentication);
+        OAuth2AccessToken enhance = super.enhance(customAccessToken, authentication);
         enhance.getAdditionalInformation().put(TOKEN_SEG_CLIENT,userDetails.getClientId());
 
         return enhance;
