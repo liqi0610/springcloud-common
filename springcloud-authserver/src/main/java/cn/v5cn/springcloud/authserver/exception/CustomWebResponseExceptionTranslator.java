@@ -41,6 +41,12 @@ public class CustomWebResponseExceptionTranslator extends DefaultWebResponseExce
             }
             oAuth2Exception.addAdditionalInformation("code",code);
             oAuth2Exception.addAdditionalInformation("message",message);
+        } else if(e instanceof CustomAuthenticationException) {
+            CustomAuthenticationException e1 = (CustomAuthenticationException) e;
+            oAuth2Exception = new OAuth2Exception(e1.getMessage());
+            oAuth2Exception.addAdditionalInformation("message",e1.getMessage());
+            oAuth2Exception.addAdditionalInformation("code",String.valueOf(e1.getCode().getCode()));
+            httpStatus = e1.getStatus().value();
         } else {
             ResponseEntity<OAuth2Exception> responseEntity = super.translate(e);
             oAuth2Exception = responseEntity.getBody();
