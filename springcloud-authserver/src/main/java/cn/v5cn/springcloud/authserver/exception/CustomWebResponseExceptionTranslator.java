@@ -51,7 +51,7 @@ public class CustomWebResponseExceptionTranslator extends DefaultWebResponseExce
             oAuth2Exception.addAdditionalInformation("message","账号认证失败");
             LOGGER.error("OAuth2Exception", oAuth2Exception);
         }
-
+        LOGGER.error(e.getMessage(),e);
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(oAuth2Exception,headers,HttpStatus.valueOf(httpStatus));
     }
