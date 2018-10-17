@@ -23,6 +23,7 @@
 		<module>springcloud-zuul</module>
 		<module>springcloud-gateway</module>
 		<module>springcloud-authserver</module>
+        <module>springcloud-service</module>
 	</modules>
 
 	<properties>
