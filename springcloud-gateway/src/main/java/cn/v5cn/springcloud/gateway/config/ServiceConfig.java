@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableConfigurationProperties
-@RibbonClient(name = "auth")
+@RibbonClient(name = "auth-server")
 public class ServiceConfig {
 
     @Autowired

@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class CustomRemoteTokenServices {
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    private final Log logger = LogFactory.getLog(getClass());
 
     private LoadBalancerClient loadBalancerClient;
 
