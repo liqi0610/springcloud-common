@@ -20,6 +20,7 @@ spring:
           predicates:
             - Path=/service/**
           filters:
+            - SwaggerHeaderFilter
             - StripPrefix=1
         - id: service_auth
           uri: lb://AUTH-SERVER
@@ -55,10 +56,11 @@ hystrix:
 
 auth:
   permitall:
-    -
-      pattern: /login/**
-    -
-      pattern: /web/public/**
+    - pattern: /login/**
+    - pattern: /web/public/**
+    - pattern: v2/api-docs
+    - pattern: /swagger-resources/**
+    - pattern: /webjars/**
 
 security:
   oauth2:
