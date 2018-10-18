@@ -1,4 +1,4 @@
-package cn.v5cn.springcloud.commons;
+package cn.v5cn.springcloud.enums;
 
 /**
  * @author ZYW
