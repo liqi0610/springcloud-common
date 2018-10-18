@@ -3,6 +3,7 @@ package cn.v5cn.springcloud.authres.filter;
 
 import cn.v5cn.springcloud.authres.annotation.PreAuth;
 import cn.v5cn.springcloud.authres.security.CustomerSecurityExpressionRoot;
+import cn.v5cn.springcloud.exception.ForbiddenException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,9 +12,13 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.expression.SecurityExpressionOperations;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 /**
  * @author ZYW
@@ -50,6 +55,7 @@ public class AuthAspect {
             return joinPoint.proceed();
         }
 
-        return "Forbidden";
+        //FORBIDDEN
+        throw new ForbiddenException("没有权限访问！");
     }
 }
