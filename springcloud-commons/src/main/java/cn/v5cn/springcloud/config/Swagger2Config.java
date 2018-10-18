@@ -27,6 +27,7 @@ public class Swagger2Config {
         tokenPar.name("Authorization").description("令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
         pars.add(tokenPar.build());
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(true)
                 .produces(Sets.newHashSet("application/json","application/x-www-form-urlencoded","*/*"))
                 .consumes(Sets.newHashSet("application/json","application/x-www-form-urlencoded","*/*"))
                 .protocols(Sets.newHashSet("http"))
