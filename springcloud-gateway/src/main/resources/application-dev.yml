@@ -8,19 +8,19 @@ spring:
       discovery:
         locator:
           enabled: true
+      default-filters:
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/fallback
       routes:
-        - id: service_demo
-          uri: lb://DEMO
+        - id: service_1
+          uri: lb://SERVICE1
           order: 7000
           predicates:
-            - Path=/demo/**
+            - Path=/service/**
           filters:
-            - name: Hystrix
-              args:
-                name: fallbackcmd
-                fallbackUri: forward:/fallback
             - StripPrefix=1
-            - AddResponseHeader=X-Response-Default-Foo, Default-Bar
         - id: service_auth
           uri: lb://AUTH-SERVER
           order: 8000

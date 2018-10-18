@@ -40,12 +40,12 @@ public class HeaderEnhanceFilter {
                     req = request.mutate().header(USER_ID_IN_HEADER,userId).build();
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Failed to customize header for the request, but still release it as the it would be regarded without any user details.", e);
                 }
             }
         } else {
             LOGGER.info("Regard this request as anonymous request, so set anonymous user_id  in the header.");
-            request.mutate()
+            req = request.mutate()
                     .header(USER_ID_IN_HEADER,ANONYMOUS_USER_ID)
                     .build();
         }

@@ -10,6 +10,7 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -93,7 +94,7 @@ public class CustomRemoteTokenServices {
             HttpStatus code = (HttpStatus)postForMap.get(ERROR);
             if(code == HttpStatus.UNAUTHORIZED) {
                 //TODO:sendErrorFilter findZuulException会查看FilterRuntimeException中zuulException的code和message
-                throw new ServerException(HttpStatus.BAD_REQUEST, new ErrorCode(401, "UNAUTHORIZED", "your identity id illegal!"));
+                throw new ServerException(HttpStatus.UNAUTHORIZED, new ErrorCode(401, "UNAUTHORIZED", "your identity id illegal!"));
             }else {
                 throw new ServerException(HttpStatus.BAD_REQUEST, new ErrorCode(403, "not permitted!", "you do not have permission to operate!"));
             }
