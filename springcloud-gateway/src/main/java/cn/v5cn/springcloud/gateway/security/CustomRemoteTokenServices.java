@@ -94,9 +94,9 @@ public class CustomRemoteTokenServices {
             HttpStatus code = (HttpStatus)postForMap.get(ERROR);
             if(code == HttpStatus.UNAUTHORIZED) {
                 //TODO:sendErrorFilter findZuulException会查看FilterRuntimeException中zuulException的code和message
-                throw new ServerException(HttpStatus.UNAUTHORIZED, new ErrorCode(401, "UNAUTHORIZED", "your identity id illegal!"));
+                throw new ServerException(HttpStatus.UNAUTHORIZED, new ErrorCode(401, "UNAUTHORIZED", "令牌不合法！"));
             }else {
-                throw new ServerException(HttpStatus.FORBIDDEN, new ErrorCode(403, "not permitted!", "you do not have permission to operate!"));
+                throw new ServerException(HttpStatus.FORBIDDEN, new ErrorCode(403, "not permitted!", "没有操作权限！"));
             }
         }
 

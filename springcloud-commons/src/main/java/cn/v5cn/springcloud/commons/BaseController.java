@@ -89,7 +89,7 @@ public class BaseController {
             }*/
         }
         map.put("code", code.value());
-        map.put("msg", msg);
+        map.put("message", msg);
         map.put("timestamp", System.currentTimeMillis());
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin","*")
@@ -109,12 +109,12 @@ public class BaseController {
             status = HttpStatus.FORBIDDEN.value();
             map.put("code", HttpStatus.FORBIDDEN.value());
             String message = StringUtils.isEmpty(ex.getMessage()) ? ex.getCause().getMessage() : ex.getMessage();
-            map.put("msg",message);
+            map.put("message",message);
         } else
         if(ex instanceof RuntimeException) {
             status = HttpStatus.INTERNAL_SERVER_ERROR.value();
             String message = StringUtils.isEmpty(ex.getMessage()) ? ex.getCause().getMessage() : ex.getMessage();
-            map.put("msg",message);
+            map.put("message",message);
             map.put("code", HttpStatus.NSOP_UPLOAD_FAIL.value());
         } else if(ex instanceof MethodArgumentNotValidException){
             status = HttpStatus.INTERNAL_SERVER_ERROR.value();
@@ -126,39 +126,39 @@ public class BaseController {
             for (FieldError fe : fes) {
                 errorMessage.add(fe.getDefaultMessage());
             }
-            map.put("msg", Joiner.on(",").join(errorMessage));
+            map.put("message", Joiner.on(",").join(errorMessage));
         } else if(ex instanceof ServletRequestBindingException) {
             status = HttpStatus.INTERNAL_SERVER_ERROR.value();
             if(StringUtils.contains(ex.getMessage(),TOKEN_NON_EXISTENT)) {
                 status = HttpStatus.UNAUTHORIZED.value();
                 map.put("code", HttpStatus.UNAUTHORIZED.value());
                 String message = StringUtils.isEmpty(ex.getMessage()) ? ex.getCause().getMessage() : ex.getMessage();
-                map.put("msg",message);
+                map.put("message",message);
             }
         //}else if(ex instanceof BasePayException) {
         }else if(ex instanceof RuntimeException) {
             /*BasePayException bpe = (BasePayException) ex;
             status = org.springframework.http.HttpStatus.OK.value();
             map.put("code",bpe.getStatus());
-            map.put("msg",bpe.getMessage());
+            map.put("message",bpe.getMessage());
             map.put("resultCode",bpe.getCode());*/
         //}else if(ex instanceof EtcException) {
         }else if(ex instanceof RuntimeException) {
             /*EtcException ecte = (EtcException) ex;
             status = ecte.getStatus();
             map.put("code", ecte.getCode());
-            map.put("msg",ecte.getMessage());*/
+            map.put("message",ecte.getMessage());*/
         } else if(ex instanceof ForbiddenException) {
             status = HttpStatus.FORBIDDEN.value();
             map.put("code", HttpStatus.FORBIDDEN.value());
             String message = StringUtils.isEmpty(ex.getMessage()) ? ex.getCause().getMessage() : ex.getMessage();
-            map.put("msg",message);
+            map.put("message",message);
         }
 
         if(status == 0) {
             status = HttpStatus.INTERNAL_SERVER_ERROR.value();
             map.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            map.put("msg", HttpStatus.INTERNAL_SERVER_ERROR.msg());
+            map.put("message", HttpStatus.INTERNAL_SERVER_ERROR.msg());
         }
         ex.printStackTrace();
         LOGGER.error(ex.getMessage(),ex);

@@ -21,19 +21,28 @@ public class CustomExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     @Override
     protected HttpStatus getHttpStatus(Map<String, Object> errorAttributes) {
-        HttpStatus status = (HttpStatus) errorAttributes.get("status");
-        return HttpStatus.INTERNAL_SERVER_ERROR == status ? HttpStatus.OK : status;
+        return (HttpStatus) errorAttributes.get("status");
     }
 
     @Override
     protected Map<String, Object> getErrorAttributes(ServerRequest request, boolean includeStackTrace) {
-        Map<String, Object> errorAttributes = new LinkedHashMap<>();
-        errorAttributes.put("code", 1000);
         Throwable error = this.getError(request);
-        errorAttributes.put("status", this.determineHttpStatus(error));
-        errorAttributes.put("message", this.buildMessage(error));
-        errorAttributes.put("path", request.path());
-        errorAttributes.put("timestamp", new Date());
+        Map<String, Object> errorAttributes = new LinkedHashMap<>();
+        if(error instanceof ServerException) {
+            ServerException serverException = (ServerException) error;
+            errorAttributes.put("code", serverException.getCode().getCode());
+            errorAttributes.put("status", serverException.getStatus());
+            errorAttributes.put("message", serverException.getCode().getDetailMessage());
+            errorAttributes.put("path", request.path());
+            errorAttributes.put("timestamp", new Date());
+        } else {
+            errorAttributes.put("code", 1000);
+            errorAttributes.put("status", this.determineHttpStatus(error));
+            errorAttributes.put("message", this.buildMessage(error));
+            errorAttributes.put("path", request.path());
+            errorAttributes.put("timestamp", new Date());
+        }
+
         return errorAttributes;
     }
 
