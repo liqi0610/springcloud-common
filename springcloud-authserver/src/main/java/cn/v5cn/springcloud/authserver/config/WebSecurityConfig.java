@@ -38,15 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addLogoutHandler(customLogoutHandler());
     }
 
-    /*@Bean
-    public DaoAuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setHideUserNotFoundExceptions(false);
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }*/
-
     @Bean
     public CustomLogoutHandler customLogoutHandler() {
         return new CustomLogoutHandler();
