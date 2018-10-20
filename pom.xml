@@ -26,6 +26,7 @@
         <module>springcloud-service</module>
         <module>springcloud-commons</module>
 		<module>springcloud-authres-commons</module>
+        <module>springcloud-nacos</module>
 	</modules>
 
 	<properties>
