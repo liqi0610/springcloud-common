@@ -15,6 +15,7 @@
     <modules>
         <module>springcloud-nacos-consumer</module>
         <module>springcloud-nacos-provider</module>
+        <module>springcloud-nacos-config</module>
     </modules>
 
     <scm>
