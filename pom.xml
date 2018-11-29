@@ -27,6 +27,7 @@
         <module>springcloud-commons</module>
 		<module>springcloud-authres-commons</module>
         <module>springcloud-nacos</module>
+        <module>springcloud-rocketmq</module>
 	</modules>
 
 	<properties>
