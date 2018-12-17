@@ -28,7 +28,8 @@
 		<module>springcloud-authres-commons</module>
         <module>springcloud-nacos</module>
         <module>springcloud-rocketmq</module>
-	</modules>
+        <module>springboot-fastdfs</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
