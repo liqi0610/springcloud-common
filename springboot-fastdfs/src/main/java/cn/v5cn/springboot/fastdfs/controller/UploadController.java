@@ -2,7 +2,6 @@ package cn.v5cn.springboot.fastdfs.controller;
 
 import com.github.tobato.fastdfs.domain.MetaData;
 import com.github.tobato.fastdfs.domain.StorePath;
-import com.github.tobato.fastdfs.proto.storage.DownloadCallback;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
