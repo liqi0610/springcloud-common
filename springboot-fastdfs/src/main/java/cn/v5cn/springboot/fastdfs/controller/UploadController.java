@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +48,7 @@ public class UploadController {
         return ResponseEntity.ok(storePath.getFullPath() + "=====" + storePath.getPath() + "+++" + storePath.getGroup());
     }
 
-    @PostMapping("/download")
+    @GetMapping("/download")
     public void download(String groupName, String path, HttpServletResponse response) {
         //获取文件元数据
         Set<MetaData> metadataSet = fileStorageClient.getMetadata(groupName, path);
