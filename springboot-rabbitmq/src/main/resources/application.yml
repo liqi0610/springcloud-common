@@ -1,0 +1,11 @@
+server:
+  port: 8999
+
+
+spring:
+  rabbitmq:
+    host: 154.8.143.230
+    port: 5672
+    username: zhangsan
+    password: 000000
+

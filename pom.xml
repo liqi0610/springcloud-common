@@ -29,6 +29,7 @@
         <module>springcloud-nacos</module>
         <module>springcloud-rocketmq</module>
         <module>springboot-fastdfs</module>
+        <module>springboot-rabbitmq</module>
     </modules>
 
 	<properties>
