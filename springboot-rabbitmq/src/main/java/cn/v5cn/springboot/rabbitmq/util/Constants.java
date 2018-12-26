@@ -9,9 +9,9 @@ public class Constants {
 
 
     public static final String VEHICLE_DRIVE_IN_EXCHANGE = "vehicle-drive-in-exchange";
-    public static final String VEHICLE_DRIVE_OUT_TOPIC = "vehicle-drive-out-topic";
-    public static final String VEHICLE_WHITE_TOPIC = "vehicle-white-topic";
-    public static final String VEHICLE_BLACK_TOPIC = "vehicle-black-topic";
+    public static final String VEHICLE_DRIVE_OUT_EXCHANGE = "vehicle-drive-out-exchange";
+    public static final String VEHICLE_WHITE_EXCHANGE = "vehicle-white-exchange";
+    public static final String VEHICLE_BLACK_EXCHANGE = "vehicle-black-exchange";
 
 
     public static final String VEHICLE_DRIVE_IN_QUEUE = "vehicle-drive-in-queue-";

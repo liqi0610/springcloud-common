@@ -18,20 +18,35 @@ public class RabbitMQConfig {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Bean("driveInExchange")
+    public FanoutExchange driveInExchange() {
+        return (FanoutExchange)ExchangeBuilder.fanoutExchange(Constants.VEHICLE_DRIVE_IN_EXCHANGE).durable(true).build();
+    }
+
     /**
      * 声明一个车辆驶入队列 支持持久化.并绑定
      *
      * @return the queue
      */
     @Bean("driveInQueue")
-    public Queue entryQueue() {
-        Exchange exchange = ExchangeBuilder.fanoutExchange(Constants.VEHICLE_DRIVE_IN_EXCHANGE).durable(true).build();
-        Queue queue = QueueBuilder.durable(Constants.VEHICLE_DRIVE_IN_QUEUE + "num01").build();
-        BindingBuilder.bind(queue).to(exchange);
-
-        return queue;
+    public Queue driveInQueue() {
+        return QueueBuilder.durable(Constants.VEHICLE_DRIVE_IN_QUEUE + "num01").withArgument("x-queue-mode","lazy").build();
     }
 
+    @Bean("driveInQueue2")
+    public Queue driveInQueue2() {
+        return QueueBuilder.durable(Constants.VEHICLE_DRIVE_IN_QUEUE + "num02").withArgument("x-queue-mode","lazy").build();
+    }
+
+    @Bean("driveInExchangeQueueBinding")
+    public Binding driveInExchangeQueueBinding(FanoutExchange driveInExchange,Queue driveInQueue) {
+        return BindingBuilder.bind(driveInQueue).to(driveInExchange);
+    }
+
+    @Bean("driveInExchangeQueueBinding2")
+    public Binding driveInExchangeQueueBinding2(FanoutExchange driveInExchange,Queue driveInQueue2) {
+        return BindingBuilder.bind(driveInQueue2).to(driveInExchange);
+    }
 
 
 }
