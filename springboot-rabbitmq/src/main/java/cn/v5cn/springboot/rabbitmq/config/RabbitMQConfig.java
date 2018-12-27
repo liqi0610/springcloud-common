@@ -3,9 +3,10 @@ package cn.v5cn.springboot.rabbitmq.config;
 import cn.v5cn.springboot.rabbitmq.util.Constants;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * @author ZYW
@@ -15,8 +16,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    /**
+     * 设置消息转换
+     * @return
+     */
+    /*@Bean
+    @Primary
+    public RabbitTemplate rabbitTemplate(RabbitTemplate rabbitTemplate) {
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        return rabbitTemplate;
+    }*/
 
     @Bean("driveInExchange")
     public FanoutExchange driveInExchange() {

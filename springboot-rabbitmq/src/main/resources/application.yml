@@ -9,7 +9,6 @@ spring:
     username: lisi
     password: 123456
     virtual-host: /
-    connection-timeout: 4000
     listener:
       simple:
         # 采用手动应答
