@@ -16,6 +16,6 @@ public class VehicleDriveInQueueListener2 {
 
     @RabbitHandler
     public void process(String message) {
-        System.out.println("VehicleDriveInQueueListener: " + message);
+        System.out.println("VehicleDriveInQueueListener2: " + message);
     }
 }

@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 public class VehicleDriveInQueueListener {
 
     @RabbitHandler
-    public void process(String message) {
+    public void process(String message) throws InterruptedException {
+        Thread.sleep(50000);
         System.out.println("VehicleDriveInQueueListener: " + message);
     }
 }
