@@ -1,5 +1,5 @@
 spring:
   rocketmq:
-    nameServer: localhost:9876
+    nameServer: 154.8.143.230:9876
     producer:
       group: my-group1
