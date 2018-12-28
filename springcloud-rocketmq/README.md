@@ -77,4 +77,8 @@
    
 3. 安装控制台参照[文档](https://github.com/apache/rocketmq-externals/blob/d1f387af651e0d7bbe060e1af4dd2b555b3e3e01/rocketmq-console/README.md)
 
-4. [参考文章](https://my.oschina.net/u/3846635/blog/1802448)
+4. 参考文章
+
+    [文章1](https://blog.csdn.net/mefly521/article/details/84394483)
+    
+    [文章2](https://my.oschina.net/u/3846635/blog/1802448)
