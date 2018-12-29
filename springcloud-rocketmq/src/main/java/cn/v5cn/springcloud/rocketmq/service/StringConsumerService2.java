@@ -7,11 +7,11 @@ import org.apache.rocketmq.spring.starter.core.RocketMQListener;
 import org.springframework.stereotype.Service;
 
 @Service
-@RocketMQMessageListener(topic = Constants.SPRING_TOPIC,consumerGroup = Constants.SPRING_TOPIC_CONSUMER)
-public class StringConsumerService implements RocketMQListener<String> {
+@RocketMQMessageListener(topic = Constants.SPRING_TOPIC,consumerGroup = Constants.SPRING_TOPIC_CONSUMER + "01")
+public class StringConsumerService2 implements RocketMQListener<String> {
     @Override
     public void onMessage(String s) {
-        System.out.println("接收到消息时间1：" + System.currentTimeMillis());
+        System.out.println("接收到消息时间2：" + System.currentTimeMillis());
         System.out.println(s);
     }
 }
