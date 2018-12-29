@@ -45,7 +45,7 @@ public class RocketMQController {
 //        Map<String,String> propers = new HashMap<>();
 //        propers.put(MessageConst.PROPERTY_DELAY_TIME_LEVEL, String.valueOf(3));
         Message<String> message2 = MessageBuilder.withPayload("Helloooooooooo").setHeader("WAIT_STORE_MSG_OK",true)
-                .setHeader(RocketMQMessageConst.DELAY_TIME_LEVEL, String.valueOf(5))
+                //.setHeader(RocketMQMessageConst.DELAY_TIME_LEVEL, String.valueOf(5))
                 .build();
 
         SendResult sendResult = rocketMQTemplate.syncSend(Constants.SPRING_TOPIC,message2);

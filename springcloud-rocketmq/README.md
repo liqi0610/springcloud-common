@@ -3,6 +3,13 @@
 
 官方github地址[https://github.com/apache/rocketmq-spring](https://github.com/apache/rocketmq-spring)
 
+### RocketMQ广播模式
+
+对于RocketMQ同一个消费组下(`Consumer Group`)的消息监听在广播模式下会得到相同的消息。
+
+使用注解的方式是：`@RocketMQMessageListener(topic = Constants.SPRING_TOPIC,consumerGroup = Constants.SPRING_TOPIC_CONSUMER,messageModel = MessageModel.BROADCASTING)`
+
+即：`MessageModel.BROADCASTING`
 ## RocketMQ Docker搭建
 1. 下载官方docker构建文件[https://github.com/apache/rocketmq-externals](https://github.com/apache/rocketmq-externals)
     官方文件中包含`rocketmq-docker`为我们所需要的Docker搭建项目。
