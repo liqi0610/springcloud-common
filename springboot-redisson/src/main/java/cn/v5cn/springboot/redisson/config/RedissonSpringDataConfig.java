@@ -1,5 +1,5 @@
 /*
-package cn.v5cn.redisson.demo.config;
+package cn.v5cn.springboot.redisson.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -23,7 +23,7 @@ public class RedissonSpringDataConfig {
 
     @Profile("dev")
     @Bean(destroyMethod = "shutdown")
-    public RedissonClient redisson(@Value("classpath:/redisson-dev.yaml") Resource configFile) throws IOException {
+    public RedissonClient redisson(@Value("classpath:/redisson/redisson-dev.yaml") Resource configFile) throws IOException {
         Config config = Config.fromYAML(configFile.getInputStream());
         return Redisson.create(config);
     }
