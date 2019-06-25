@@ -30,7 +30,8 @@
         <module>springcloud-rocketmq</module>
         <module>springboot-fastdfs</module>
         <module>springboot-rabbitmq</module>
-    </modules>
+		<module>springboot-redisson</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
