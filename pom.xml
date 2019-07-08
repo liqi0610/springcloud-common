@@ -32,6 +32,7 @@
         <module>springboot-rabbitmq</module>
 		<module>springboot-redisson</module>
 		<module>springboot-logstash</module>
+		<module>springboot-cache-jetcache</module>
 	</modules>
 
 	<properties>
