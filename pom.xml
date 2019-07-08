@@ -33,6 +33,7 @@
 		<module>springboot-redisson</module>
 		<module>springboot-logstash</module>
 		<module>springboot-cache-jetcache</module>
+		<module>springboot-cache-j2cache</module>
 	</modules>
 
 	<properties>
