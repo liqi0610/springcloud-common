@@ -34,6 +34,7 @@
 		<module>springboot-logstash</module>
 		<module>springboot-cache-jetcache</module>
 		<module>springboot-cache-j2cache</module>
+		<module>springboot-webmagic</module>
 	</modules>
 
 	<properties>
