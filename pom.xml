@@ -35,6 +35,7 @@
 		<module>springboot-cache-jetcache</module>
 		<module>springboot-cache-j2cache</module>
 		<module>springboot-webmagic</module>
+		<module>springboot-dubbo-nacos</module>
 	</modules>
 
 	<properties>
