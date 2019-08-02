@@ -15,10 +15,10 @@ singleServerConfig:
   subscriptionConnectionPoolSize: 50
   connectionMinimumIdleSize: 32
   connectionPoolSize: 64
-  database: 0
+  database: 4
 #  dnsMonitoring: false
-  dnsMonitoringInterval: 5000
+#  dnsMonitoringInterval: 5000
 threads: 0
 nettyThreads: 0
-codec: !<org.redisson.codec.JsonJacksonCodec> {}
+#codec: !<org.redisson.codec.JsonJacksonCodec> {}
 #  "transportMode":"NIO"
