@@ -4,10 +4,15 @@
 ## vim常用快捷键
 ### insert模式 shell命令通用
 `ctrl+h`  删除字符
+
 `ctrl+w`  删除单词
+
 `ctrl+u`  删除一行
+
 `ctrl+b`  前移一个字符
+
 `ctrl+f`  后移一个字符
+
 ### insert模式
 ### shell
 `ctrl+a` 移动命令开始
