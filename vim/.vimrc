@@ -3,6 +3,12 @@ set number
 " 设置语法高亮
 syntax on
 
+" 高亮当前行
+set cursorline
+
+" 设置空白字符的视觉提示
+set list listchars=extends:❯,precedes:❮,tab:▸\ ,trail:˽
+
 " 设置 jj切换到normel模式
 inoremap jj <Esc>`^
 " 设置leader 键
