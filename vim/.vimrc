@@ -2,8 +2,7 @@
 set number
 " 设置语法高亮
 syntax on
-" 设置主题
-colorscheme koehler
+
 " 设置 jj切换到normel模式
 inoremap jj <Esc>`^
 " 设置leader 键
@@ -25,6 +24,8 @@ noremap <C-l> <C-w>l
 call plug#begin('~/.vim/plugged')
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
+" 主题插件
+Plug 'sainnhe/edge'
 " Initialize plugin system
 call plug#end()
 
@@ -34,3 +35,10 @@ let NERDTreeShowHidden=1
 let NERDTreeIgnore = [
         \ '\.git$','\.hg$','\.svn$','\.stversions$','\.pyc$'
         \]
+
+" 设置主题
+set termguicolors
+
+" for dark version
+set background=dark
+colorscheme edge
