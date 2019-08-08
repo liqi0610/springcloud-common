@@ -15,7 +15,10 @@
 
 ### insert模式
 ### shell
-`ctrl+a` 移动命令开始
+`ctrl+a` 移动到一行开始
+
+`ctrl+e` 移动到一行末尾
+
 ### normal模式
 `gi` 快速回到刚才编辑的地方
 
