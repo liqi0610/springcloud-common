@@ -29,7 +29,15 @@ noremap <C-l> <C-w>l
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 Plug 'mhinz/vim-startify'
-Plug 'scrooloose/nerdtree'
+" Python插件
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+Plug 'davidhalter/jedi-vim'
+" go语言插件
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" 括号，双引号，单引号自动补全并且光标定位到中间
+Plug 'Raimondi/delimitMate'
+" vim状态栏插件
+Plug 'vim-airline/vim-airline'
 " 主题插件
 Plug 'sainnhe/edge'
 " Initialize plugin system
