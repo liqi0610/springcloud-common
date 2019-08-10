@@ -19,6 +19,14 @@
 
 `ctrl+e` 移动到一行末尾
 
+`ctrl+r` 搜索历史命令
+
+`ctrl+p` 上一个命令
+
+`ctrl+n` 下一个命令
+
+`ctrl+l` 清屏，替代 clear 命令
+
 ### normal模式
 `gi` 快速回到刚才编辑的地方
 
