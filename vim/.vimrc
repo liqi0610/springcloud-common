@@ -29,6 +29,7 @@ noremap <C-l> <C-w>l
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 Plug 'mhinz/vim-startify'
+Plug 'scrooloose/nerdtree'
 " Python插件
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'davidhalter/jedi-vim'
