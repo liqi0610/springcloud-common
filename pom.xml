@@ -36,7 +36,8 @@
 		<module>springboot-cache-j2cache</module>
 		<module>springboot-webmagic</module>
 		<module>springboot-dubbo-nacos</module>
-	</modules>
+        <module>hystrix-demo</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
