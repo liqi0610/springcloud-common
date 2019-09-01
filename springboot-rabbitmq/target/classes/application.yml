@@ -1,0 +1,13 @@
+server:
+  port: 8999
+
+
+spring:
+  rabbitmq:
+    host: 154.8.143.230
+    port: 5672
+    username: lisi
+    password: 123456
+    virtual-host: /
+    connection-timeout: 4000
+
