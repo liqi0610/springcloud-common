@@ -83,3 +83,6 @@ check_interval = 0
     [runners.cache.s3]
     [runners.cache.gcs]
 ```
+
+### gitlab.rb
+`gitlab.rb`为gitlab的配置文件，里面配置了gitlab的访问域名和`registry_external_url`的访问域名
