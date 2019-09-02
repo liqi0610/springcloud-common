@@ -5,18 +5,21 @@ import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author ZYW
  * @version 1.0
  * @date 2019-09-01 21:27
  */
-@Configurable
+@Configuration
 public class ShiroConfig {
 
-    //注入自定义的realm，告诉shiro如何获取用户信息来做登录或权限控制
+    /**
+     * 注入自定义的realm，告诉shiro如何获取用户信息来做登录或权限控制
+     * @return CustomRealm
+     */
     @Bean
     public Realm realm() {
         return new CustomRealm();
@@ -25,12 +28,27 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chain = new DefaultShiroFilterChainDefinition();
-        // 由于demo1展示统一使用注解做访问控制，所以这里配置所有请求路径都可以匿名访问
+
+        //添加自定义的filter
+
+
+        /*// 由于demo1展示统一使用注解做访问控制，所以这里配置所有请求路径都可以匿名访问
         chain.addPathDefinition("/**", "anon"); // all paths are managed via annotations
 
         // 这另一种配置方式。但是还是用上面那种吧，容易理解一点。
         // or allow basic authentication, but NOT require it.
-        // chainDefinition.addPathDefinition("/**", "authcBasic[permissive]");
+        // chainDefinition.addPathDefinition("/**", "authcBasic[permissive]");*/
+
+        //哪些请求可以匿名访问
+        chain.addPathDefinition("/user/login", "anon");
+        chain.addPathDefinition("/page/401", "anon");
+        chain.addPathDefinition("/page/403", "anon");
+        chain.addPathDefinition("/t5/hello", "anon");
+        chain.addPathDefinition("/t5/guest", "anon");
+
+        //除了以上的请求外，其它请求都需要登录
+        chain.addPathDefinition("/**", "authc");
+
         return chain;
     }
 
