@@ -38,6 +38,7 @@
 		<module>springboot-dubbo-nacos</module>
         <module>hystrix-demo</module>
         <module>springboot-shiro</module>
+        <module>springboot-security</module>
     </modules>
 
 	<properties>
