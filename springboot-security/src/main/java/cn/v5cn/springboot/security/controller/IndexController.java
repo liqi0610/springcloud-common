@@ -4,6 +4,11 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author ZYW
  * @version 1.0
@@ -19,55 +24,22 @@ public class IndexController {
 
     @GetMapping("/json")
     public Object json(){
-        return JSON.parse("[\n" +
-                "    {\n" +
-                "        \"ID\": \"5d452e6b-71e0-67ae-5169-c7e6342da53b\",\n" +
-                "        \"Node\": \"Jacks-MacBook-Air.local\",\n" +
-                "        \"Address\": \"127.0.0.1\",\n" +
-                "        \"Datacenter\": \"dc1\",\n" +
-                "        \"TaggedAddresses\": {\n" +
-                "            \"lan\": \"127.0.0.1\",\n" +
-                "            \"wan\": \"127.0.0.1\"\n" +
-                "        },\n" +
-                "        \"NodeMeta\": {\n" +
-                "            \"consul-network-segment\": \"\"\n" +
-                "        },\n" +
-                "        \"ServiceID\": \"csi\",\n" +
-                "        \"ServiceName\": \"moguhu_server\",\n" +
-                "        \"ServiceTags\": [\n" +
-                "            \"dev\"\n" +
-                "        ],\n" +
-                "        \"ServiceAddress\": \"127.0.0.1\",\n" +
-                "        \"ServiceMeta\": {},\n" +
-                "        \"ServicePort\": 9991,\n" +
-                "        \"ServiceEnableTagOverride\": false,\n" +
-                "        \"CreateIndex\": 10,\n" +
-                "        \"ModifyIndex\": 10\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"ID\": \"5d452e6b-71e0-67ae-5169-c7e6342da53b\",\n" +
-                "        \"Node\": \"Jacks-MacBook-Air.local\",\n" +
-                "        \"Address\": \"127.0.0.1\",\n" +
-                "        \"Datacenter\": \"dc1\",\n" +
-                "        \"TaggedAddresses\": {\n" +
-                "            \"lan\": \"127.0.0.1\",\n" +
-                "            \"wan\": \"127.0.0.1\"\n" +
-                "        },\n" +
-                "        \"NodeMeta\": {\n" +
-                "            \"consul-network-segment\": \"\"\n" +
-                "        },\n" +
-                "        \"ServiceID\": \"oc\",\n" +
-                "        \"ServiceName\": \"moguhu_server\",\n" +
-                "        \"ServiceTags\": [\n" +
-                "            \"dev\"\n" +
-                "        ],\n" +
-                "        \"ServiceAddress\": \"127.0.0.1\",\n" +
-                "        \"ServiceMeta\": {},\n" +
-                "        \"ServicePort\": 9992,\n" +
-                "        \"ServiceEnableTagOverride\": false,\n" +
-                "        \"CreateIndex\": 12,\n" +
-                "        \"ModifyIndex\": 12\n" +
-                "    }\n" +
-                "]");
+        List<Map<String,String>> result = new ArrayList<>(2);
+        Map<String,String> node1 = new HashMap<>();
+        node1.put("Address","192.168.1.3");
+        node1.put("ServicePort","9991");
+        result.add(node1);
+
+        Map<String,String> node2 = new HashMap<>();
+        node2.put("Address","192.168.1.3");
+        node2.put("ServicePort","9992");
+        result.add(node2);
+
+//        Map<String,String> node3 = new HashMap<>();
+//        node3.put("Address","192.168.1.15");
+//        node3.put("ServicePort","8080");
+//        result.add(node3);
+
+        return result;
     }
 }
