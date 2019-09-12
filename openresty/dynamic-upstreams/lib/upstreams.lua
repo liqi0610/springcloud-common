@@ -1,6 +1,6 @@
-local http = require "socket.http"
-local ltn12 = require "ltn12"
-local cjson = require "cjson"
+local http = require("socket.http")
+local ltn12 = require("ltn12")
+local cjson = require("cjson.safe")
 
 local _M = {
     _VERSION="1.0"
@@ -12,26 +12,37 @@ function _M:update_upstreams()
     local resp = {}
 
    local res, code, response_headers =  http.request{
-        url = "http://192.168.1.3:9992/json", sink = ltn12.sink.table(resp)
+        url = "http://192.168.1.5:9992/json", sink = ltn12.sink.table(resp)
     }
-    ngx.log(ngx.INFO,"00000000000000: ",res)
-    ngx.log(ngx.INFO,"11111111111111111",code)
-    ngx.log(ngx.INFO,"22222222222222222222222222222: ",cjson.encode(resp))
+    ngx.log(ngx.DEBUG,"result: ",res);
+    ngx.log(ngx.DEBUG,"code: ",code);
 
-    local resp = cjson.decode(resp[1])
-
-    local upstreams = {}
-    for i, v in ipairs(resp) do
-        upstreams[i] = {ip=v.Address, port=v.ServicePort}
+    if code == 200 then
+        local resp,err = cjson.decode(resp[1]);
+        if not resp then
+            ngx.log(ngx.ERR,"table to json error: ", err)
+            return
+        end
+        local upstreams = {}
+        for i, v in ipairs(resp) do
+            upstreams[i] = {ip=v.Address, port=v.ServicePort}
+        end
+        local ups_list_json = cjson.encode(upstreams);
+        ngx.log(ngx.DEBUG,"upstream list json", ups_list_json);
+        ngx.shared.upstream_list:set("backends", ups_list_json)
+    else
+        ngx.log(ngx.ERR,"msg: 请求服务列表接口异常！")
     end
-    ngx.log(ngx.INFO,"444444444444444444444444444",cjson.encode(upstreams));
-    ngx.shared.upstream_list:set("backends", cjson.encode(upstreams))
 end
 
 function _M:get_upstreams()
    local upstreams_str = ngx.shared.upstream_list:get("backends")
-   ngx.log(ngx.INFO,"33333333333333333333333333333333",upstreams_str)
-   return cjson.decode(upstreams_str)
+   ngx.log(ngx.DEBUG,"shared get ups json: ",upstreams_str)
+   local upstreams, err = cjson.decode(upstreams_str)
+   if not upstreams then
+        ngx.log(ngx.ERR,"get shared ups string json to table!", err)
+   end
+   return upstreams
 end
 
 return _M
