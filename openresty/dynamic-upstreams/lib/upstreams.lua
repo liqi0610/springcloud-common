@@ -1,6 +1,7 @@
 local http = require("socket.http")
 local ltn12 = require("ltn12")
 local cjson = require("cjson.safe")
+local resty_roundrobin = require("resty.roundrobin");
 
 local _M = {
     _VERSION="1.0"
@@ -24,8 +25,9 @@ function _M:update_upstreams()
             return
         end
         local upstreams = {}
-        for i, v in ipairs(resp) do
-            upstreams[i] = {ip=v.Address, port=v.ServicePort}
+        for _, v in ipairs(resp) do
+            local ip_port = v.Address .. ":" .. v.ServicePort;
+            upstreams[ip_port] = 1;
         end
         local ups_list_json = cjson.encode(upstreams);
         ngx.log(ngx.DEBUG,"upstream list json", ups_list_json);
@@ -39,10 +41,11 @@ function _M:get_upstreams()
    local upstreams_str = ngx.shared.upstream_list:get("backends")
    ngx.log(ngx.DEBUG,"shared get ups json: ",upstreams_str)
    local upstreams, err = cjson.decode(upstreams_str)
+   ngx.log(ngx.DEBUG,"shared get ups json---------------: ",type(upstreams))
    if not upstreams then
         ngx.log(ngx.ERR,"get shared ups string json to table!", err)
    end
-   return upstreams
+   return resty_roundrobin:new(upstreams)
 end
 
 return _M
