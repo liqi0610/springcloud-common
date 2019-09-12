@@ -26,19 +26,19 @@ public class IndexController {
     public Object json(){
         List<Map<String,String>> result = new ArrayList<>(2);
         Map<String,String> node1 = new HashMap<>();
-        node1.put("Address","192.168.1.3");
+        node1.put("Address","192.168.1.5");
         node1.put("ServicePort","9991");
         result.add(node1);
 
         Map<String,String> node2 = new HashMap<>();
-        node2.put("Address","192.168.1.3");
+        node2.put("Address","192.168.1.5");
         node2.put("ServicePort","9992");
         result.add(node2);
 
-//        Map<String,String> node3 = new HashMap<>();
-//        node3.put("Address","192.168.1.15");
-//        node3.put("ServicePort","8080");
-//        result.add(node3);
+        Map<String,String> node3 = new HashMap<>();
+        node3.put("Address","192.168.1.15");
+        node3.put("ServicePort","8080");
+        result.add(node3);
 
         return result;
     }
