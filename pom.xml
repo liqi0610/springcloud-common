@@ -39,6 +39,7 @@
         <module>hystrix-demo</module>
         <module>springboot-shiro</module>
         <module>springboot-security</module>
+        <module>others</module>
     </modules>
 
 	<properties>
