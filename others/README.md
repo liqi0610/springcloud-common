@@ -16,3 +16,4 @@ protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
 }
 ```
 2、`lhm`子包是自定义的`HashMap`+链表的实现方式。
+3、`casfaa`子包是使用锁、CAS和FAA原语来并发操作同一个资源。
