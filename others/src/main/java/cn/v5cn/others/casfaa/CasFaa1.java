@@ -1,8 +1,8 @@
 package cn.v5cn.others.casfaa;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,10 +19,17 @@ public class CasFaa1 {
         int count = 10000;
         ReentrantLock lock = new ReentrantLock();
         CountDownLatch cdl = new CountDownLatch(count);
-        ExecutorService pool = Executors.newFixedThreadPool(100);
+        ThreadFactory nameThreadFactory = new ThreadFactoryBuilder().setNameFormat("zyw-thread-%d").build();
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(5,
+                200, 0L,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(1024),
+                nameThreadFactory,
+                new ThreadPoolExecutor.AbortPolicy());
+        //ExecutorService pool = Executors.newFixedThreadPool(100);
         CasFaa1 casFaa = new CasFaa1();
         for(int i = 0; i < count; i++) {
-            pool.execute(() -> {
+            executor.execute(() -> {
                 // 加锁方式
                 //casFaa.transfer(balance,1,lock,cdl);
                 // CAS原语操作
@@ -30,9 +37,18 @@ public class CasFaa1 {
                 // FAA原语操作
                 casFaa.transferFaa(balance,1,cdl);
             });
+            /*pool.execute(() -> {
+                // 加锁方式
+                //casFaa.transfer(balance,1,lock,cdl);
+                // CAS原语操作
+                //casFaa.transferCas(balance,1,cdl);
+                // FAA原语操作
+                casFaa.transferFaa(balance,1,cdl);
+            });*/
         }
+
         cdl.await();
-        pool.shutdown();
+        executor.shutdown();
 
         //System.out.println("转账结果：" + balance[0]);
         System.out.println("转账结果：" + balance);
