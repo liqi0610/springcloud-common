@@ -23,11 +23,11 @@ public class SendReadMsg {
 
     public void sendMsg(String msg){
         RBlockingQueue<String> demo = redisson.getBlockingQueue("demo");
-        RDelayedQueue<String> delayedQueue = redisson.getDelayedQueue(demo);
-        String format = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        delayedQueue.offerAsync("dda" + System.currentTimeMillis(),10, TimeUnit.SECONDS);
-        System.out.println("消息发送完成：" + format);
-        delayedQueue.destroy();
+//        RDelayedQueue<String> delayedQueue = redisson.getDelayedQueue(demo);
+//        String format = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        delayedQueue.offerAsync("dda" + System.currentTimeMillis(),10, TimeUnit.SECONDS);
+        demo.addAsync("dda" + System.currentTimeMillis());
+        System.out.println("消息发送完成");
     }
 
     public String readMsg() throws InterruptedException {
