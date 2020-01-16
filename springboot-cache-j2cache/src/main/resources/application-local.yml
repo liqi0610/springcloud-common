@@ -1,2 +1,9 @@
 j2cache:
   config-location: /j2cache/j2cache-${spring.profiles.active}.properties
+
+management.endpoints.web.cors.allow-credentials: true
+management.endpoints.web.cors.allowed-headers: *
+management.endpoints.web.cors.allowed-methods: *
+management.endpoints.web.cors.allowed-origins: *
+#management.endpoints.web.cors.exposed-headers= # Comma-separated list of headers to include in a response.
+management.endpoints.web.cors.max-age=3600s
