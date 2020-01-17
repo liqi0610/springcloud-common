@@ -47,7 +47,7 @@ public class ShiroConfig {
         chain.addPathDefinition("/t5/guest", "anon");
 
         //除了以上的请求外，其它请求都需要登录
-        chain.addPathDefinition("/**", "authc");
+//        chain.addPathDefinition("/**", "authc");
 
         return chain;
     }
