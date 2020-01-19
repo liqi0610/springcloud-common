@@ -41,6 +41,7 @@
         <module>springboot-security</module>
         <module>others</module>
         <module>guice-demo</module>
+        <module>springboot-elasticsearch751</module>
     </modules>
 
 	<properties>
