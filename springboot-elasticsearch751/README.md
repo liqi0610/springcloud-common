@@ -77,6 +77,17 @@ networks:
 ```json
 GET /_cat/plugins
 
+#ik_max_word
+#ik_smart
+#hanlp: hanlp默认分词
+#hanlp_standard: 标准分词
+#hanlp_index: 索引分词
+#hanlp_nlp: NLP分词
+#hanlp_n_short: N-最短路分词
+#hanlp_dijkstra: 最短路分词
+#hanlp_crf: CRF分词（在hanlp 1.6.6已开始废弃）
+#hanlp_speed: 极速词典分词
+
 POST _analyze
 {
   "analyzer": "hanlp_standard",
@@ -161,9 +172,11 @@ DELETE /security-evaluation-v1
 
 GET /security-evaluation-v2
 
+# 查看该索引下字段是如何分词的
 GET /security-evaluation-v2/_analyze
 {
-  "status":"完成，获得3学分"
+  "field": "name.pinyin", 
+  "text":"张三2"
 }
 
 #创建mapping
