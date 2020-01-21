@@ -29,7 +29,6 @@ public class ElasticsearchRestClientConfig {
 
     @Bean
     public RestClientBuilder restClientBuilder(){
-        LOGGER.info(ipAddress.length + "----------------------------------------------");
         HttpHost[] hosts = Arrays.stream(ipAddress)
                 .map(this::makeHttpHost)
                 .filter(Objects::nonNull)
