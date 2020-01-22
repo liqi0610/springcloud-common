@@ -669,6 +669,33 @@ GET /security-evaluation-v2/_search
     }
   }
 }
+
+#--------创建Search Template-----------------
+POST _scripts/flights_search_temp
+{
+  "script" : {
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "match" : {
+          "DestCountry": "{{query_string}}"
+        }
+      }
+    }
+  }
+}
+
+# 查看模板
+GET _scripts/flights_search_temp
+
+# 使用模板
+GET _search/template
+{
+  "id":"flights_search_temp",
+  "params": {
+    "query_string":"CN"
+  }
+}
 ```
 ## bool查询
 ![./boo查询](./bool查询.png)
