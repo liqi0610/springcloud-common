@@ -75,6 +75,9 @@ public class ElasticsearchController {
         SearchSourceBuilder ssb = SearchSourceBuilder
                 .searchSource()
                 .query(bqb)
+                //返回的查询结果中包含的字段，第一个数组是包含哪些字段，第二个数组是排除哪些字段
+                //排除content字段
+                .fetchSource(new String[]{},new String[]{"content"})
                 .from(0)
                 .size(20);
         SearchRequest searchRequest = new SearchRequest(INDEX);

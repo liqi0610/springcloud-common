@@ -75,6 +75,7 @@ networks:
 ```
 ## 索引创建和查询
 ```json
+# 查看插件列表
 GET /_cat/plugins
 
 #ik_max_word
@@ -99,7 +100,7 @@ POST _analyze
 GET /_cat/templates
 
 # 创建索引
-PUT /security-evaluation-v2
+PUT /security-evaluation-v35
 {
     "settings" : {
       "analysis": {
@@ -125,6 +126,7 @@ GET /security-evaluation-v2/_search
   }
 }
 
+# 多条件查询
 GET /security-evaluation-v2/_search
 {
   "query": {
@@ -170,90 +172,363 @@ GET /security-evaluation-v2/_search
 # 删除索引
 DELETE /security-evaluation-v1
 
+# 查询索引信息
 GET /security-evaluation-v2
 
 # 查看该索引下字段是如何分词的
-GET /security-evaluation-v2/_analyze
+GET /security-evaluation-v35/_analyze
 {
-  "field": "name.pinyin", 
+  "field": "name", 
   "text":"张三2"
+}
+
+#插入数据
+PUT /security-evaluation-v2/_doc/3
+{
+  "content" : "在古老的 Hadoop1.0 中，MapReduce 的 JobTracker 负责了太多的工作，包括资源调度，管理众多的 TaskTracker 等工作。这自然是不合理的，于是 Hadoop 在 1.0 到 2.0 的升级过程中，便将 JobTracker 的资源调度工作独立了出来，而这一改动，直接让 Hadoop 成为大数据中最稳固的那一块基石。，而这个独立出来的资源管理框架，就是 Yarn",
+    "createTime" : "2020-01-18 14:04:34",
+    "fileId" : "1123455_13",
+    "id" : 15795070137913,
+    "name" : "赵六",
+    "status" : "完成30%",
+    "title" : "深入浅出 Hadoop YARN",
+    "type" : 2
 }
 
 #创建mapping
 PUT /security-evaluation-v2/_mapping
 {
-    "properties" : {
-        "createTime" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
-          }
-        },
-        "fileId" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
-          }
-        },
-        "id" : {
-          "type" : "long"
-        },
-        "name" : {
-          "type" : "text",
-          "analyzer": "hanlp",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            },
-            "pinyin" : {
-              "type" : "text",
-              "analyzer" : "pinyin"
-            }
-          }
-        },
-        "content" : {
-          "type" : "text",
-          "analyzer": "hanlp",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
-          }
-        },
-        "status" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
-          }
-        },
-        "title" : {
-          "type" : "text",
-          "analyzer": "hanlp",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            },
-            "pinyin" : {
-              "type" : "text",
-              "analyzer" : "pinyin"
-            }
-          }
-        },
-        "type" : {
-          "type" : "long"
+  "properties" : {
+    "createTime" : {
+      "type" : "text",
+      "fields" : {
+        "keyword" : {
+          "type" : "keyword",
+          "ignore_above" : 256
         }
+      }
+    },
+    "fileId" : {
+      "type" : "keyword",
+      "index" : false
+    },
+    "id" : {
+      "type" : "long"
+    },
+    "name" : {
+      "type" : "text",
+      "analyzer": "hanlp",
+      "fields" : {
+        "keyword" : {
+          "type" : "keyword",
+          "ignore_above" : 256
+        },
+        "pinyin" : {
+          "type" : "text",
+          "analyzer" : "pinyin"
+        }
+      }
+    },
+    "content" : {
+      "type" : "text",
+      "analyzer": "hanlp",
+      "fields" : {
+        "keyword" : {
+          "type" : "keyword",
+          "ignore_above" : 256
+        }
+      }
+    },
+    "status" : {
+      "type" : "text",
+      "fields" : {
+        "keyword" : {
+          "type" : "keyword",
+          "ignore_above" : 256
+        }
+      }
+    },
+    "title" : {
+      "type" : "text",
+      "analyzer": "hanlp",
+      "fields" : {
+        "keyword" : {
+          "type" : "keyword",
+          "ignore_above" : 256
+        },
+        "pinyin" : {
+          "type" : "text",
+          "analyzer" : "pinyin"
+        }
+      }
+    },
+    "type" : {
+      "type" : "long"
     }
   }
+}
+  
+#URI查询
+GET /security-evaluation-v2/_search?q=title:标题
+
+#带profile的查询
+GET /security-evaluation-v2/_search?q=标题5&df=title
+{
+  "profile": "true"
+}
+
+#泛查询，正对_all,所有字段，性能不佳
+GET /security-evaluation-v2/_search?q=标题
+{
+  "profile": "true"
+}
+
+#使用双引号，Phrase查询，双引号包含的内容出现的顺序必须一致和必须同时出现
+#"标题 2"，等效于 标题 AND 2 。Phrase查询，还要求前后顺序保持一致
+GET /security-evaluation-v2/_search?q=title:"标题 2"
+{
+  "profile": "true"
+}
+
+#不加双引号的 标题 2 相当于 标题 OR 2
+GET /security-evaluation-v2/_search?q=title:标题 2
+{
+  "profile": "true"
+}
+
+# 分组，Bool查询 (标题 AND 2) (标题 2)=(标题 OR 2) (标题 NOT 2)表示必须包括标题但不包括2
+GET /security-evaluation-v2/_search?q=title:(标题 2)
+{
+  "profile": "true"
+}
+#URI还可以使用通配符*，?和正则表达式的查询语法
+
+#-------------------------------------------------------------------------------------#
+
+#Request Body查询 分页 排序
+GET /security-evaluation-v2/_search
+{
+  "from": 0,
+  "size": 20,
+  "sort": [
+    {
+      "id": {
+        "order": "desc"
+      }
+    }
+  ], 
+  "query": {
+    "match_all": {}
+  }
+}
+
+#指定_source返回需要的字段,_source支持通配符
+POST /security-evaluation-v2/_search
+{
+  "query": {
+    "match_all": {}
+  }, 
+  "_source": ["id","title"]
+}
+
+# 脚本字段
+GET /security-evaluation-v2/_search
+{
+  "script_fields": {
+    "new_name": {
+      "script": {
+        "lang": "painless",
+        "source": "doc['type']"
+      }
+    }
+  }, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+# Request Body中的match，如果是使用 "title":"标签2" 默认是标题和2的OR的关系，如果想使用AND的关系，需要添加operator操作符
+GET /security-evaluation-v2/_search
+{
+  "query": {
+    "match": {
+      "title": {
+        "query": "标题2",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+# 使用match phrase 默认情况跟上面使用了operator+and效果相同
+GET /security-evaluation-v2/_search
+{
+  "query": {
+    "match_phrase": {
+      "title": {
+        "query": "标题2"
+      }
+    }
+  }
+}
+
+#-----------------------------------Query String和Simple Query String-----------------------------------
+
+# "query":"标题 AND 2"、"query":"标题 NOT 2"或者"query":"标题 OR 2"，也可以使用()进行分组
+GET /security-evaluation-v2/_search
+{
+  "query": {
+    "query_string": {
+      "default_field": "title",
+      "query": "标题 OR 2"
+    }
+  }
+}
+GET /security-evaluation-v2/_search
+{
+  "query": {
+    "query_string": {
+      "fields": ["name","title"],
+      "query": "(标题 OR 2) AND (张三 AND 2)"
+    }
+  }
+}
+
+#-----------------------------------index template和Dynamic Tempate-----------------------------------
+
+# 查看index template
+GET _template
+
+GET _template/security-evaluation-template-v1
+
+# 创建index 模板 index_patterns:security-evaluation-*表示所有使用security-evaluation-开头的都会应用该模板
+PUT _template/security-evaluation-template-v1
+{
+  "index_patterns": "security-evaluation-*",
+  "settings" : {
+    "analysis": {
+      "analyzer": {
+        
+        "hanlp": {
+          "tokenizer": "hanlp_standard"
+        },
+        "pinyin": {
+          "tokenizer": "pinyin"
+        }
+      }
+    }
+  },
+  "mappings" : {
+    "properties" : {
+      "createTime" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      "fileId" : {
+        "type" : "keyword",
+        "index" : false
+      },
+      "id" : {
+        "type" : "long"
+      },
+      "name" : {
+        "type" : "text",
+        "analyzer": "hanlp",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          },
+          "pinyin" : {
+            "type" : "text",
+            "analyzer" : "pinyin"
+          }
+        }
+      },
+      "content" : {
+        "type" : "text",
+        "analyzer": "hanlp",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      "status" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      "title" : {
+        "type" : "text",
+        "analyzer": "hanlp",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          },
+          "pinyin" : {
+            "type" : "text",
+            "analyzer" : "pinyin"
+          }
+        }
+      },
+      "type" : {
+        "type" : "long"
+      }
+    }
+  }
+}
+
+# Dynamic Tempate是写在具体的index的mapping中的
+PUT _template/security-evaluation-template-v1
+{
+  "index_patterns": "security-evaluation-*",
+  "settings" : {
+    "analysis": {
+      "analyzer": {
+        
+        "hanlp": {
+          "tokenizer": "hanlp_standard"
+        },
+        "pinyin": {
+          "tokenizer": "pinyin"
+        }
+      }
+    }
+  },
+  "mappings" : {
+    "dynamic_templates" : [
+      {
+        "strings_as_keywords" : {
+          "match" : "*",
+          "mapping" : {
+            "type" : "keyword"
+          }
+        }
+      }
+    ],
+    "properties" : {
+      "createTime" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      }
+    }
+  }
+}
 ```
