@@ -182,7 +182,7 @@ GET /security-evaluation-v35/_analyze
   "text":"张三2"
 }
 
-#插入数据
+# 插入数据 PUT 插入必须指定id,POST可以自动生成id
 PUT /security-evaluation-v2/_doc/3
 {
   "content" : "在古老的 Hadoop1.0 中，MapReduce 的 JobTracker 负责了太多的工作，包括资源调度，管理众多的 TaskTracker 等工作。这自然是不合理的，于是 Hadoop 在 1.0 到 2.0 的升级过程中，便将 JobTracker 的资源调度工作独立了出来，而这一改动，直接让 Hadoop 成为大数据中最稳固的那一块基石。，而这个独立出来的资源管理框架，就是 Yarn",
