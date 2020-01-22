@@ -64,13 +64,18 @@ public class ElasticsearchController {
     public Object getIndex(@PathVariable("type") String type,@PathVariable("search") String search) throws IOException {
         BoolQueryBuilder bqb = QueryBuilders.boolQuery();
         if(!("-1".equals(type))) {
-            bqb.must(QueryBuilders.matchQuery("type",type));
+            //使用两种方式查询固定类型的数据，must和filter,两者区别是filter不参与算分，性能更好
+//            bqb.must(QueryBuilders.matchQuery("type",type));
+            bqb.filter(QueryBuilders.termQuery("type",type));
         }
-        bqb.should(QueryBuilders.matchQuery("title",search));
-        bqb.should(QueryBuilders.matchQuery("name",search));
-        bqb.should(QueryBuilders.matchQuery("content",search));
-        bqb.should(QueryBuilders.matchQuery("title.pinyin",search));
-        bqb.should(QueryBuilders.matchQuery("name.pinyin",search));
+        //通过should方式查询
+//        bqb.should(QueryBuilders.matchQuery("title",search));
+//        bqb.should(QueryBuilders.matchQuery("name",search));
+//        bqb.should(QueryBuilders.matchQuery("content",search));
+//        bqb.should(QueryBuilders.matchQuery("title.pinyin",search));
+//        bqb.should(QueryBuilders.matchQuery("name.pinyin",search));
+
+        bqb.must(QueryBuilders.multiMatchQuery(search,"title","name","content","title.pinyin","name.pinyin"));
 
         SearchSourceBuilder ssb = SearchSourceBuilder
                 .searchSource()

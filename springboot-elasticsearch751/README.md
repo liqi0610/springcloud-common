@@ -182,7 +182,7 @@ GET /security-evaluation-v35/_analyze
   "text":"张三2"
 }
 
-# 插入数据 PUT 插入必须指定id,POST可以自动生成id
+#插入数据 PUT 插入必须指定id,POST可以自动生成id
 PUT /security-evaluation-v2/_doc/3
 {
   "content" : "在古老的 Hadoop1.0 中，MapReduce 的 JobTracker 负责了太多的工作，包括资源调度，管理众多的 TaskTracker 等工作。这自然是不合理的，于是 Hadoop 在 1.0 到 2.0 的升级过程中，便将 JobTracker 的资源调度工作独立了出来，而这一改动，直接让 Hadoop 成为大数据中最稳固的那一块基石。，而这个独立出来的资源管理框架，就是 Yarn",
@@ -354,10 +354,74 @@ GET /security-evaluation-v2/_search
     "match": {
       "title": {
         "query": "标题2",
-        "operator": "and"
+        "operator": "or"
+      },
+      "name": {
+        "query": "刘八"
       }
     }
   }
+}
+
+# 对字段查询
+GET /security-evaluation-v2/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "标题2",
+      "fields": ["title","name","content","title.pinyin","name.pinyin"]
+    }
+  },
+  "profile": "true"
+}
+
+# 多字段查询
+# type是固定字段，查询type=1的(使用filter)，多字段查询，查询需要查询的字段
+GET /security-evaluation-v2/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "term": {
+          "type": "1"
+        }
+      }, 
+      "must": [
+        {
+          "multi_match": {
+            "query": "标题2",
+            "fields": ["title","name","content","title.pinyin","name.pinyin"]
+          }
+        }
+      ]
+    }
+  },
+  "profile": "true"
+}
+
+
+# 多字段查询
+# type是固定字段，查询type=1的(使用match)和filter区别在于filter不参与算分性能更好，多字段查询，查询需要查询的字段
+GET /security-evaluation-v2/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "type": "1"
+          }
+        },
+        {
+          "multi_match": {
+            "query": "标题2",
+            "fields": ["title","name","content","title.pinyin","name.pinyin"]
+          }
+        }
+      ]
+    }
+  },
+  "profile": "true"
 }
 
 # 使用match phrase 默认情况跟上面使用了operator+and效果相同
@@ -368,6 +432,33 @@ GET /security-evaluation-v2/_search
       "title": {
         "query": "标题2"
       }
+    }
+  }
+}
+
+#------DisjunctionMaxQuery 查询-------
+GET /security-evaluation-v2/_search
+{
+  "profile": "true", 
+  "query": {
+    "dis_max": {
+      //1.获得最佳匹配语句的评分_score。
+      //2.将其他匹配语句的评分与tie_breaker相乘。
+      //3.对以上评分求和并规范化
+      "tie_breaker": 0.7,
+      "boost": 1.2,
+      "queries": [
+        {
+          "match": {
+            "title": "标题2"
+          }
+        },
+        {
+          "match": {
+            "name": "张三2"
+          }
+        }
+      ]
     }
   }
 }
@@ -528,6 +619,79 @@ PUT _template/security-evaluation-template-v1
           }
         }
       }
+    }
+  }
+}
+
+#---------------------------ES的统计--------------------------------、
+#Bucket 根据类型统计 可以在aggs中嵌套aggs来统计Metrics
+GET /security-evaluation-v2/_search
+{
+  "size": 0,
+  "aggs": {
+    "types": {
+      "terms": {
+        "field": "type"
+      }
+    }
+  }
+}
+
+#----------------------结构化查询----------------------------
+#使用term进行结构化查询
+GET /security-evaluation-v2/_search
+{
+  "profile": "true", 
+  //查看算分情况
+  "explain": true, 
+  "query": {
+    "term": {
+      "id": {
+        "value": "1579508663528"
+      }
+    }
+  }
+}
+
+#使用constant_score+filter不让ES进行算分，提高性能
+GET /security-evaluation-v2/_search
+{
+  "profile": "true", 
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "id": "1579508663528"
+        }
+      },
+      //指定分数
+      "boost": 1.0
+    }
+  }
+}
+```
+## bool查询
+![./boo查询](./bool查询.png)
+
+## 数字Range
+![数字Range](./shuzi.png)
+
+## 日期Range
+![日期Range](./riqi.png)
+
+## Multi Match三种使用场景
+![Multi Match三种使用场景](./multi-match.png)
+### 三种情况的使用
+```json
+POST /security-evaluation-v2/_search
+{
+  "query": {
+    "multi_match": {
+      "type": "best_fields",
+      "query": "Quick pets",
+      "fields": ["title","body"],
+      "tie_breaker": 0.2,
+      "minimum_should_match": "20%"
     }
   }
 }
