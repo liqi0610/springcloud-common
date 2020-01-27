@@ -696,6 +696,48 @@ GET _search/template
     "query_string":"CN"
   }
 }
+
+#--------------自动补全------------------------
+PUT articles
+{
+  "mappings": {
+    "properties": {
+      "title_completion": {
+        //创建completion类型
+        "type": "completion"
+      }
+    }
+  }
+}
+
+GET /articles
+
+POST /articles/_bulk
+{ "index": {}}
+{ "title_completion":"lucene is very cool" }
+{ "index": {}}
+{ "title_completion":"Elasticsearch builds on top of lucene" }
+{ "index": {}}
+{ "title_completion":"Elasticsearch rocks" }
+{ "index": {}}
+{ "title_completion":"elastic is the company behind ELK stack" }
+{ "index": {}}
+{ "title_completion":"Elk stack rocks" }
+{ "index": {}}
+
+# 自动补全查询
+POST /articles/_search
+{
+  "size": 0,
+  "suggest": {
+    "article-suggester": {
+      "prefix":"elk",
+      "completion": {
+        "field": "title_completion"
+      }
+    }
+  }
+}
 ```
 ## bool查询
 ![./boo查询](./bool查询.png)
