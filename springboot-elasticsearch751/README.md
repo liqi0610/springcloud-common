@@ -765,3 +765,6 @@ POST /security-evaluation-v2/_search
   }
 }
 ```
+## 集群节点的职责
+![节点参数配置](./节点参数配置.png)
+![单一职责节点](./单一职责节点.png)
