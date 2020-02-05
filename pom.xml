@@ -42,6 +42,7 @@
         <module>others</module>
         <module>guice-demo</module>
         <module>springboot-elasticsearch751</module>
+        <module>hbase14-demo</module>
     </modules>
 
 	<properties>
