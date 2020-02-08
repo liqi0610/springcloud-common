@@ -1,5 +1,16 @@
+## `.vimrc`文件文章
+用户的`home`目录下，也就是`~`目录下
 ## .vimrc为vim的配置文件
 同样`neovim`也是可以使用的,neoviw的配置文件为`init.vim`,它的格式跟`.vimrc`一样
+
+## 使用vim-plug安装插件
+1. 首先安装vim-plug,linux和MacOS安装，可以看vim-plug-readme.md文件
+```shell script
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```
+2. vim-plug安装插件需要安装git
+3. 运行vim命令使用命令行模式执行`:PluginInstall`命令，插件就安装完成了。
 
 ## vim常用快捷键
 ### insert模式 shell命令通用
