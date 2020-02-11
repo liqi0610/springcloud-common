@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: minio-demo
+
+
+minio:
+  endpoint: http://192.168.33.12:9000
+  access-key: AKIAIOSFODNN7EXAMPLE
+  secret-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
