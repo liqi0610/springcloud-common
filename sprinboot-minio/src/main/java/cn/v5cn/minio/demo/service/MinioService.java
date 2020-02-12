@@ -38,6 +38,20 @@ public interface MinioService {
 
     /**
      * <p>
+     *     上传文件到Minio中
+     * </p>
+     * @param bucketName 桶名称
+     * @param objectName 写入桶中的名称
+     * @param stream 数据流
+     * @param size 数据大小
+     * @param origName 文件原名
+     * @param contentType 文件类型
+     * @return 返回是否写入成功
+     */
+    boolean putFile(String bucketName, String objectName, InputStream stream, Long size, String origName,String contentType);
+
+    /**
+     * <p>
      *     获取Minio中的文件
      * </p>
      * @param bucketName 桶名称

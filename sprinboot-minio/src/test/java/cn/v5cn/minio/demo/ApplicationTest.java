@@ -41,7 +41,7 @@ public class ApplicationTest {
     public void getFileMetadata() {
         FileMetadata metadata = minioService.getFileMetadata("test1", "test2.pdf");
         System.out.println(metadata);
-        System.out.println(new String(Base64Utils.decodeFromString(metadata.getOrigName())));
+        System.out.println(metadata.getOrigName());
     }
 
     @Test

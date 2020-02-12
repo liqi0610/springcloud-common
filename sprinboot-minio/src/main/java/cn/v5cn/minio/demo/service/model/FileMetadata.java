@@ -1,6 +1,9 @@
 package cn.v5cn.minio.demo.service.model;
 
+import org.springframework.util.Base64Utils;
+
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -37,7 +40,7 @@ public class FileMetadata {
     }
 
     public String getOrigName() {
-        return origName;
+        return new String(Base64Utils.decodeFromString(origName), StandardCharsets.UTF_8);
     }
 
     public void setOrigName(String origName) {

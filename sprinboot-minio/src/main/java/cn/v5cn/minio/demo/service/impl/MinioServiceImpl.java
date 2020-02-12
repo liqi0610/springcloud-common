@@ -1,8 +1,10 @@
 package cn.v5cn.minio.demo.service.impl;
 
+import cn.v5cn.minio.demo.config.MinioClientList;
 import cn.v5cn.minio.demo.exception.MyMinioException;
 import cn.v5cn.minio.demo.service.MinioService;
 import cn.v5cn.minio.demo.service.model.FileMetadata;
+import com.google.common.collect.Maps;
 import io.minio.MinioClient;
 import io.minio.ObjectStat;
 import io.minio.errors.*;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -30,12 +33,13 @@ public class MinioServiceImpl implements MinioService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MinioServiceImpl.class);
 
     @Autowired
-    private MinioClient minioClient;
+    private MinioClientList minioClients;
 
 
     @Override
     public boolean putFile(String bucketName, String objectName, InputStream stream, Long size, Map<String, String> headerMap, String contentType) {
         try {
+            MinioClient minioClient = minioClients.getClient();
             boolean isExist = minioClient.bucketExists(bucketName);
             if(!isExist) {
                 minioClient.makeBucket(bucketName);
@@ -59,9 +63,37 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @Override
+    public boolean putFile(String bucketName, String objectName, InputStream stream, Long size, String origName, String contentType) {
+        try {
+            MinioClient minioClient = minioClients.getClient();
+            boolean isExist = minioClient.bucketExists(bucketName);
+            if(!isExist) {
+                minioClient.makeBucket(bucketName);
+            }
+            Map<String,String> metadata = Maps.newHashMap();
+            metadata.put(MinioService.FILE_ORIGINAL_NAME, Base64Utils.encodeToString(origName.getBytes()));
+            minioClient.putObject(bucketName,objectName,stream,size,metadata,null,contentType);
+        } catch (InvalidBucketNameException
+                | XmlPullParserException
+                | ErrorResponseException
+                | InternalException
+                | InvalidArgumentException
+                | InsufficientDataException
+                | NoResponseException
+                | InvalidKeyException
+                | IOException
+                | RegionConflictException
+                | NoSuchAlgorithmException e) {
+            LOGGER.error(e.getMessage(),e);
+            throw new MyMinioException(e);
+        }
+        return true;
+    }
+
+    @Override
     public InputStream getFile(String bucketName,String objectName) {
         try {
-            return minioClient.getObject(bucketName,objectName);
+            return minioClients.getClient().getObject(bucketName,objectName);
         } catch (InvalidBucketNameException
                 | NoSuchAlgorithmException
                 | InsufficientDataException
@@ -80,6 +112,7 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public FileMetadata getFileMetadata(String bucketName, String objectName){
         try {
+            MinioClient minioClient = minioClients.getClient();
             ObjectStat objectStat = minioClient.statObject(bucketName, objectName);
 
             String origName = "";
@@ -109,7 +142,7 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public boolean removeFile(String bucketName, String objectName) {
         try {
-            minioClient.removeObject(bucketName,objectName);
+            minioClients.getClient().removeObject(bucketName,objectName);
         } catch (InvalidBucketNameException
                 | NoSuchAlgorithmException
                 | InsufficientDataException
