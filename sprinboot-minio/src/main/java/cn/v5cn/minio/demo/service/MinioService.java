@@ -1,5 +1,6 @@
 package cn.v5cn.minio.demo.service;
 
+import cn.v5cn.minio.demo.service.model.FileMetadata;
 import io.minio.ServerSideEncryption;
 
 import java.io.InputStream;
@@ -11,6 +12,16 @@ import java.util.Map;
  * @date 2020-02-11 15:39
  */
 public interface MinioService {
+
+    /**
+     * 文件原名
+     */
+    String FILE_ORIGINAL_NAME = "original-name";
+    /**
+     * 存入Minio中的数据前缀
+     */
+    String META_DATA_PREFIX = "x-amz-meta-" + MinioService.FILE_ORIGINAL_NAME;
+
     /**
      * <p>
      *     上传文件到Minio中
@@ -35,5 +46,23 @@ public interface MinioService {
      */
     InputStream getFile(String bucketName,String objectName);
 
-    InputStream getFileMetadata(String bucketName,String objectName);
+    /**
+     * <p>
+     *     返回File数据流和Metadata
+     * </p>
+     * @param bucketName 桶名称
+     * @param objectName 文件名称
+     * @return FileMetadata 返回数据
+     */
+    FileMetadata getFileMetadata(String bucketName, String objectName);
+
+    /**
+     * <p>
+     *     删除桶中的文件
+     * </p>
+     * @param bucketName 桶名称
+     * @param objectName 桶中文件名称
+     * @return 返回是否删除成功
+     */
+    boolean removeFile(String bucketName,String objectName);
 }
