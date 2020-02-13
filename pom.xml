@@ -46,6 +46,7 @@
         <module>hbase14-phoenix-jdbc-demo</module>
         <module>springboot-hbase14-phoenix-mybatis</module>
         <module>sprinboot-minio</module>
+        <module>hadoop3-demo</module>
     </modules>
 
 	<properties>

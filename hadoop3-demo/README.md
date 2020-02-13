@@ -238,3 +238,6 @@ hadoop101
 hadoop102
 ```
 配置完成，可以启动集群了。
+
+## 以WordCount为例，MapReduce的过程
+![WordCount](./image/1.png)
