@@ -1,4 +1,4 @@
-package cn.v5cn.phoenix.jdbc.demo;
+package cn.v5cn.phoenix.jdbc;
 
 import java.sql.*;
 

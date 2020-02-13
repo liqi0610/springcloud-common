@@ -10,6 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>hbase14-demo</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>hbase14-phoenix-jdbc</module>
+        <module>springboot-phoenix-mybatis</module>
+    </modules>
 
     <dependencies>
         <dependency>
