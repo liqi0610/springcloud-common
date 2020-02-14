@@ -241,3 +241,31 @@ hadoop102
 
 ## 以WordCount为例，MapReduce的过程
 ![WordCount](./image/1.png)
+
+## 跑MapReduce时报的异常
+```text
+2020-02-14 06:19:50,337 INFO mapreduce.Job: Job job_1581660411968_0004 running in uber mode : false
+2020-02-14 06:19:50,338 INFO mapreduce.Job:  map 0% reduce 0%
+2020-02-14 06:19:50,364 INFO mapreduce.Job: Job job_1581660411968_0004 failed with state FAILED due to: Application application_1581660411968_0004 failed 2 times due to AM Container for appattempt_1581660411968_0004_000002 exited with  exitCode: 127
+Failing this attempt.Diagnostics: [2020-02-14 06:19:49.685]Exception from container-launch.
+Container id: container_1581660411968_0004_02_000001
+Exit code: 127
+
+[2020-02-14 06:19:49.689]Container exited with a non-zero exit code 127. Error file: prelaunch.err.
+Last 4096 bytes of prelaunch.err :
+Last 4096 bytes of stderr :
+/bin/bash: /bin/java: No such file or directory
+
+
+[2020-02-14 06:19:49.689]Container exited with a non-zero exit code 127. Error file: prelaunch.err.
+Last 4096 bytes of prelaunch.err :
+Last 4096 bytes of stderr :
+/bin/bash: /bin/java: No such file or directory
+```
+### 解决方案
+在系统的`bin`目录下创建一个`java`的软连接
+```shell script
+cd /bin
+# /usr/local/jdk8/bin/java java的安装路径
+sudo ln -s /usr/local/jdk8/bin/java java
+```
