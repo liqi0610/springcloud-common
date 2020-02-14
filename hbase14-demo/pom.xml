@@ -14,21 +14,7 @@
     <modules>
         <module>hbase14-phoenix-jdbc</module>
         <module>springboot-phoenix-mybatis</module>
+        <module>hbase14-api</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase-client</artifactId>
-            <version>1.4.12</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
 </project>

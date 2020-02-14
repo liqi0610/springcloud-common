@@ -1,4 +1,4 @@
-package cn.v5cn.hbase14.simple_api.demo;
+package cn.v5cn.hbase14.api;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
