@@ -14,6 +14,14 @@ import java.io.IOException;
  */
 public class WordCountReducer extends Reducer<Text, LongWritable, Text,LongWritable> {
 
+    /**
+     * 对v2s的数据进行累加，把数据转换成k3,v3
+     * @param k2
+     * @param v2s
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     protected void reduce(Text k2, Iterable<LongWritable> v2s, Context context) throws IOException, InterruptedException {
         long sum = 0;
