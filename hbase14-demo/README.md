@@ -91,3 +91,10 @@ export PATH=$PATH:$ZOOKEEPER_HOME/bin
 8. 节点可以设置权限acl,可以通过权限来限制用户的访问
 
 ### phoeninx安装配置
+解压对于版本的`phoeninx`，并拷贝`phoenix core`和`phoeix server`的`jar`文件到`hbase`的`lib`目录下，如果是`hbase`集群需要拷贝到所有集群节点上。
+我安装的`hbase`对于的`jar`文件是如下两个文件：
+1. `phoenix-core-4.15.0-HBase-1.4.jar`
+2. `phoenix-4.15.0-HBase-1.4-server.jar`
+到此`phoenix`和`hbase`就算集成完成了。然后重启`hbase`。
+#### 测试集成效果
+进入`phoenix`解压的`bin`目录，执行`./sqlline.py hadoop2:2181`，进入`phoenix`命令行，使用`help`查看支持的所有命令，使用`!tables`查看所有的表，可以看到所有的表。
