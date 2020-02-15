@@ -45,7 +45,8 @@
         <module>hbase14-demo</module>
         <module>sprinboot-minio</module>
         <module>hadoop3-demo</module>
-    </modules>
+		<module>springboot-actuator</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

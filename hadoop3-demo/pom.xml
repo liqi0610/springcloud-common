@@ -13,7 +13,21 @@
     <packaging>pom</packaging>
     <modules>
         <module>hadoop3-demo-mapreduce</module>
+        <module>hadoop3-hdfs</module>
     </modules>
 
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>3.2.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
