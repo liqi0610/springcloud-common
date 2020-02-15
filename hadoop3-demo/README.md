@@ -242,6 +242,15 @@ hadoop102
 ## 以WordCount为例，MapReduce的过程
 ![WordCount](./image/1.png)
 
+## 包MapReduce任务
+
+```shell script
+hadoop jar hadoop3-demo-mapreduce-1.0.0.jar \ 需要执行的MapReduce jar
+ cn.v5cn.mapreduce.wordcount.WordCountJob \ Job的全路径类名
+ hdfs://hadoop2:9000/hello.txt \ 输入路径
+ hdfs://hadoop2:9000/out  输出路径
+```
+
 ## 跑MapReduce时报的异常
 ```text
 2020-02-14 06:19:50,337 INFO mapreduce.Job: Job job_1581660411968_0004 running in uber mode : false

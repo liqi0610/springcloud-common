@@ -1,5 +1,57 @@
-## hbase1.4安装配置
+## hbase1.4.12安装配置
 ### 使用自带的zookeeper安装配置
+#### 拷贝依赖的hadoop配置文件
+把`hbase`所依赖的`hadoop`配置文件拷贝到`hbase`的`conf`目录，分别是`core-site.xml`和`hdfs-site.xml`。
+#### 配置hbase-env.sh
+1. 配置JDK环境变量，`export JAVA_HOME=/usr/loal/jdk8/`
+2. 注释掉设置JVM永生带的参数。
+    ```shell script
+    export HBASE_MASTER_OPTS="$HBASE_MASTER_OPTS -XX:PermSize=128m -XX:MaxPermSize=128m -XX:ReservedCodeCacheSize=256m"
+    export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS -XX:PermSize=128m -XX:MaxPermSize=128m -XX:ReservedCodeCacheSize=256m"
+    ```
+3. 配置独立Zookeeper参数
+```shell script
+# export HBASE_MANAGES_ZK=true
+```
+改参数是配置是否使用独立Zookeeper的参数。
+#### 配置hbase-site.xml
+添加如下xml配置：
+```xml
+<configuration>
+ <!-- hbase数据存放位置，可以是一个普通的文件夹例如：file:///home/vagrant/hbase，这里设置的是hdfs路径 -->
+  <property>
+    <name>hbase.rootdir</name>
+    <value>hdfs://hadoop2:9000/hbase</value>
+  </property>
+  <!-- hbase依赖的zookeeper文件存放路径，hbase内置zk使用 -->
+  <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>/home/vagrant/bigdata/hbase/zookeeper</value>
+  </property>
+  <!-- 集群运行模式，是否以集群方式运行，true表示，是，虽然只有一个节点，但是也可以使用集群方式运行 -->
+  <property>
+    <name>hbase.cluster.distributed</name>
+    <value>true</value>
+  </property>
+</configuration>
+```
+#### 运行和测试hbase是否安装完成
+进入`hbase`的`bin`目录执行`./start-hbase.sh`，等待启动完成，然后执行`jps`查看`hbase`的进程是否都已经启动，使用`./hbase shell`进入`hbase`的命令行中，执行`status`名称查看`hbase`状态。
+### 配置独立zookeeper
+#### 修改hbase-env.sh文件
+把`export HBASE_MANAGES_ZK=true`设置为false
+#### 配置hbase-site.xml
+添加如下配置：
+```xml
+<property>
+    <name>hbase.zookeeper.quorum</name>
+    <value>hadoop2</value>
+</property>
+<property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value>2181</value>
+</property>
+```
 ### 独立zookeeper安装配置
 下载zookeeper
 #### zookeeper安装配置
@@ -14,7 +66,7 @@
 4). tickTime=2000为基础时间 ticktime:用于计算的时间单元。比如 session超时:N* ticktime<br/>
 5). clientPort=2181为zookeeper的端口号
 
- ![几个参数说明](./imgs/1.png)
+    ![几个参数说明](./imgs/1.png)
 
 3. 配置zookeeper home
 ```shell script
