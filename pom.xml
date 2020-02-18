@@ -46,6 +46,7 @@
         <module>sprinboot-minio</module>
         <module>hadoop3-demo</module>
 		<module>springboot-actuator</module>
+		<module>flink19-demo</module>
 	</modules>
 
 	<properties>
