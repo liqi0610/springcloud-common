@@ -22,12 +22,14 @@ public class StreamWordCount {
 
 
         //1. 创建Flink执行上下文环境
-        //StreamExecutionEnvironment是Data Stream的上下文环境。
+        //StreamExecutionEnvironment是Data Stream的上下文环境。getExecutionEnvironment方法可以判断
+        // 当前是集群模式还是本地模式，集群模式就会创建RemoteStreamEnvironment，本地模式创建LocalStreamEnvironment，本地模式的平行度是CPU合数，下面代码获得。
+        // private static int defaultLocalParallelism = Runtime.getRuntime().availableProcessors();
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 
 
-        //2. 创建Source，Source可以有多个，但至少一个
+        //2. 创建Source，Source可以有多个，但至少一个，这个是并行度为1的source
         //   使用StreamExecutionEnvironment的socketTextStream获得Source获得的数据是一行一行的。
         DataStream<String> source = env.socketTextStream("localhost", 8888);
 

@@ -107,3 +107,5 @@ bin/flink run -m localhost:8081 -p 1 \
 * `Source`主要负责数据的读取
 * `Transformation`主要负责对数据的转换操作
 * `Sink`负责最终计算好的结果数据输出
+
+## Flink中的算子
