@@ -47,7 +47,8 @@
         <module>hadoop3-demo</module>
 		<module>springboot-actuator</module>
 		<module>flink19-demo</module>
-	</modules>
+        <module>kafka-demo</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
