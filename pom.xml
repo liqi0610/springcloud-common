@@ -48,6 +48,7 @@
 		<module>springboot-actuator</module>
 		<module>flink19-demo</module>
         <module>kafka-demo</module>
+        <module>netty-rpc-demo</module>
     </modules>
 
 	<properties>
