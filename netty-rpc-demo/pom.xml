@@ -16,6 +16,8 @@
         <module>dynamic-proxy-jdk</module>
         <module>dynamic-proxy-javassist</module>
         <module>serialize-hessian</module>
+        <module>serialize-protobuf</module>
+        <module>laoqian-rpc</module>
     </modules>
 
 
