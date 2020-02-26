@@ -740,16 +740,16 @@ POST /articles/_search
 }
 ```
 ## bool查询
-![./boo查询](./bool查询.png)
+![./boo查询](./img/bool查询.png)
 
 ## 数字Range
-![数字Range](./shuzi.png)
+![数字Range](./img/shuzi.png)
 
 ## 日期Range
-![日期Range](./riqi.png)
+![日期Range](./img/riqi.png)
 
 ## Multi Match三种使用场景
-![Multi Match三种使用场景](./multi-match.png)
+![Multi Match三种使用场景](./img/multi-match.png)
 ### 三种情况的使用
 ```json
 POST /security-evaluation-v2/_search
@@ -766,5 +766,5 @@ POST /security-evaluation-v2/_search
 }
 ```
 ## 集群节点的职责
-![节点参数配置](./节点参数配置.png)
-![单一职责节点](./单一职责节点.png)
+![节点参数配置](./img/节点参数配置.png)
+![单一职责节点](./img/单一职责节点.png)

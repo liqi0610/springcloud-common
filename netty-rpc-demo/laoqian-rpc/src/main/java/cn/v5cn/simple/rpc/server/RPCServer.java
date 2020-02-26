@@ -4,8 +4,8 @@ import cn.v5cn.simple.rpc.common.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.sctp.nio.NioSctpServerChannel;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ public class RPCServer {
         bootstrap.group(group);
         collector = new MessageCollector(handlers,registry,workerThreads);
         MessageEncoder encoder = new MessageEncoder();
-        bootstrap.channel(NioSctpServerChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+        bootstrap.channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             public void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
