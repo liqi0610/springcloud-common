@@ -11,6 +11,26 @@ hessian序列化
 ### serialize-protobuf
 protobuf序列化需要编写proto文件，使用protobuf带的编译工具生成不同语言的代码。
 
+## Netty
+### 数据的两次拷贝
+![通过网卡发送数据的两次拷贝](./img/data-copy.jpg)
+### 零拷贝(Zero-copy)技术
+所谓的零拷贝，就是取消用户空间与内核空间之间的数据拷贝操作，应用进程每一次的读写操作，
+可以通过一种方式，直接将数据写入内核或从内核中读取数据，
+再通过 DMA 将内核中的数据拷贝到网卡，或将网卡中的数据 copy 到内核。
+
+![零拷贝实现示意图](./img/zero-copy.jpg)
+零拷贝有两种解决方式，分别是  mmap+write  方式和  sendfile  方式，其核心原理都是通过虚拟内存来解决的
+### Netty的零拷贝
+上面讲的零拷贝是操作系统层面上的零拷贝，主要目标是避免用户空间与内核空间之间的数据拷贝操作，可以提升 CPU 的利用率。
+
+Netty 的零拷贝则不大一样，他完全站在了用户空间上，也就是 JVM 上，它的零拷贝主要是偏向于数据操作的优化上。
+
+那么 Netty 是怎么对数据操作进行优化的呢？
+* Netty 提供了 CompositeByteBuf 类，它可以将多个 ByteBuf 合并为一个逻辑上的  ByteBuf，避免了各个 ByteBuf 之间的拷贝。
+* ByteBuf 支持 slice 操作，因此可以将 ByteBuf 分解为多个共享同一个存储区域的 ByteBuf，避免了内存的拷贝。
+* 通过 wrap 操作，我们可以将 byte[] 数组、ByteBuf、ByteBuffer  等包装成一个 Netty ByteBuf 对象, 进而避免拷贝操作。
+
 ## RPC
 ### laoqian-rpc老钱博客RPC
 
