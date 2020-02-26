@@ -24,3 +24,7 @@ protobuf序列化需要编写proto文件，使用protobuf带的编译工具生�
 * 包含消息唯一ID
 * 使用JSON序列化
 
+## RPC博客
+![剖析 | SOFARPC 框架之总体设计与扩展机制](https://mp.weixin.qq.com/s/ZKUmmFT0NWEAvba2MJiJfA)
+![蚂蚁通信框架实践](https://mp.weixin.qq.com/s/JRsbK1Un2av9GKmJ8DK7IQ)
+
