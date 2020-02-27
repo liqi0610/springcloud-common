@@ -18,6 +18,7 @@
         <module>serialize-hessian</module>
         <module>serialize-protobuf</module>
         <module>laoqian-rpc</module>
+        <module>jdk-rpc</module>
     </modules>
 
 
