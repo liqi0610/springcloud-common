@@ -2,6 +2,26 @@
 other工程是记录一些平时练习的小例子，例如：算法，并发，异步之类的。
 ### `futures`包
 该包是练习一下，`CompletableFuture`
+
+Future是Java 5添加的类，`future`在执行的时候支持异步处理，但是在回调的过程中依旧是难免会遇到需要等待的情况。
+用来描述一个异步计算的结果。你可以使用isDone方法检查计算是否完成，或者使用get阻塞住调用线程，直到计算完成返回结果，你也可以使用cancel方法停止任务的执行。
+
+在`jdk8`里面，出现了`CompletableFuture`的新概念，支持对于异步处理完成任务之后自行处理数据。当发生异常的时候也能按照自定义的逻辑来处理。
+
+* CompletableFuture是java8引入的新类，该类实现了 Future 接口和 CompletionStage 接口，封装了future、forkjoin相关类来执行异步，所以你还是可以像以前一样通过阻塞(get)或者轮询的方式获得结果，尽管这种方式不推荐使用。
+* CompletionStage 接口代表异步计算中的 不同阶段，以及如何 组合 这些计算阶段。
+* CompletableStage 接口中有 50 多个方法，可以对 CompletableStage 进行组合、计算，方法看似很多，但可以按功能对其分类，大多数方法都有 3 种变体：
+
+* 不带 Async 方法：同步方法
+* 带 Async，只有一个参数：异步方法，使用默认的 ForkJoinPool.commonPool() 获取线程池
+* 带 Async，有两个参数：异步方法，且使用第二个参数指定的 ExecutorService 线程池
+
+[Java CompletableFuture 详解](https://colobu.com/2016/02/29/Java-CompletableFuture/)
+
+[CompletableFuture 详解](https://www.jianshu.com/p/6f3ee90ab7d3)
+
+[java8 CompletableFuture入门](https://juejin.im/post/5c77b3ade51d456a045898c8)
+
 ### `lru`包
 是练习写一个简单的LRU（最近最少使用）的缓存淘汰策略
 
