@@ -38,7 +38,8 @@ public class RPCServer {
     }
 
     private ServerBootstrap bootstrap;
-    private EventLoopGroup group;
+    private EventLoopGroup bossGroup;
+    private EventLoopGroup workerGroup;
     private MessageCollector collector;
     private Channel serverChannel;
 
@@ -52,8 +53,9 @@ public class RPCServer {
     // 启动RPC服务
     public void start() {
         bootstrap = new ServerBootstrap();
-        group = new NioEventLoopGroup(ioThreads);
-        bootstrap.group(group);
+        bossGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup(ioThreads);
+        bootstrap.group(bossGroup,workerGroup);
         collector = new MessageCollector(handlers,registry,workerThreads);
         MessageEncoder encoder = new MessageEncoder();
         bootstrap.channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
@@ -83,7 +85,8 @@ public class RPCServer {
         // 先关闭服务端套件字
         serverChannel.close();
         // 再斩断消息来源，停止io线程池
-        group.shutdownGracefully();
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
         // 最后停止业务线程
         collector.closeGracefully();
     }

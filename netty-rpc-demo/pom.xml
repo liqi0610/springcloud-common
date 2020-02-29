@@ -19,6 +19,7 @@
         <module>serialize-protobuf</module>
         <module>laoqian-rpc</module>
         <module>jdk-rpc</module>
+        <module>jdk-spi</module>
     </modules>
 
 
