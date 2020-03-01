@@ -21,6 +21,7 @@
         <module>jdk-rpc</module>
         <module>jdk-spi</module>
         <module>sofarpc-rpc</module>
+        <module>dynamic-proxy-byte-buddy</module>
     </modules>
 
 

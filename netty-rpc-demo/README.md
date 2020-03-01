@@ -1,17 +1,21 @@
 # 包含Netty和RPC的练习例子
-## 动态代理
-### dynamic-proxy-jdk
+## 1. 动态代理
+### 1.1. dynamic-proxy-jdk
 JDK自带的动态代理
-### dynamic-proxy-javassist
-javassist动态代理
-
-## 序列化
-### serialize-hessian
+### 1.2. dynamic-proxy-javassist
+javassist动态代理，`Javassist`的定位是能够操纵底层字节码，所以使用起来并不简单，要生成动态代理类恐怕是有点复杂了。
+但好的方面是，通过`Javassist`生成字节码，不需要通过反射完成方法调用，所以性能肯定是更胜一筹的。在使用中，我们要注意一个问题，
+通过`Javassist`生成一个代理类后，此`CtClass`对象会被冻结起来，不允许再修改；否则，再次生成时会报错。
+### 1.3. dynamic-proxy-byte-buddy
+`byte buddy`实现的动态代理，`Byte Buddy`在动态代理工具类中属于后起之秀，在很多优秀的项目中，像 `Spring`、`Jackson`都用到了`Byte Buddy`来完成底层代理。
+相比`Javassist`，`Byte Buddy`提供了更容易操作的`API`，编写的代码可读性更高。更重要的是，生成的代理类执行速度比`Javassist`更快。
+## 2. 序列化
+### 2.1. serialize-hessian
 hessian序列化
-### serialize-protobuf
+### 2.2. serialize-protobuf
 protobuf序列化需要编写proto文件，使用protobuf带的编译工具生成不同语言的代码。
 
-## SPI(Service Provider Interface)
+## 3. SPI(Service Provider Interface)
 SPI 全称为 (Service Provider Interface) ，是JDK内置的一种服务提供发现机制。
 SPI是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。
 当服务的提供者提供了一种接口的实现之后，需要在classpath下的META-INF/services/目录里创建一个以服务接口命名的文件，
@@ -21,17 +25,17 @@ JDK中查找服务实现的工具类是：java.util.ServiceLoader。
 
 [Java SPI机制详解](https://juejin.im/post/5af952fdf265da0b9e652de3)
 
-## Netty
-### 数据的两次拷贝
+## 4. Netty
+### 4.1. 数据的两次拷贝
 ![通过网卡发送数据的两次拷贝](./img/data-copy.jpg)
-### 零拷贝(Zero-copy)技术
+### 4.2. 零拷贝(Zero-copy)技术
 所谓的零拷贝，就是取消用户空间与内核空间之间的数据拷贝操作，应用进程每一次的读写操作，
 可以通过一种方式，直接将数据写入内核或从内核中读取数据，
 再通过 DMA 将内核中的数据拷贝到网卡，或将网卡中的数据 copy 到内核。
 
 ![零拷贝实现示意图](./img/zero-copy.jpg)
 零拷贝有两种解决方式，分别是  mmap+write  方式和  sendfile  方式，其核心原理都是通过虚拟内存来解决的
-### Netty的零拷贝
+### 4.3. Netty的零拷贝
 上面讲的零拷贝是操作系统层面上的零拷贝，主要目标是避免用户空间与内核空间之间的数据拷贝操作，可以提升 CPU 的利用率。
 
 Netty 的零拷贝则不大一样，他完全站在了用户空间上，也就是 JVM 上，它的零拷贝主要是偏向于数据操作的优化上。
@@ -41,7 +45,7 @@ Netty 的零拷贝则不大一样，他完全站在了用户空间上，也就�
 * ByteBuf 支持 slice 操作，因此可以将 ByteBuf 分解为多个共享同一个存储区域的 ByteBuf，避免了内存的拷贝。
 * 通过 wrap 操作，我们可以将 byte[] 数组、ByteBuf、ByteBuffer  等包装成一个 Netty ByteBuf 对象, 进而避免拷贝操作。
 
-### Netty的Reactor模型和最佳实践
+### 4.4 Netty的Reactor模型和最佳实践
 1. Reactor模型
 * 我们在初始化`ServerBootstrap`时需要传递两个`EventLoopGroup`，通常用于处理建连事件的线程，叫做`bossGroup`,对于`ServerBootstrap`的第一个参数`parentGroup`，我们也称之为`Acceptor`线程；
   处理已创建好的`channel`相关连IO事件的线程，叫做`workerGroup`,对应`ServerBootstrap`构造方法里的`childGroup`参数，即我们常说的`IO`线程。
@@ -74,8 +78,8 @@ Netty 的零拷贝则不大一样，他完全站在了用户空间上，也就�
 * 在使用 `Channel` 写数据之前，建议使用 `isWritable()` 方法来判断一下当前 `ChannelOutboundBuffer` 里的写缓存水位，防止 `OOM` 发生。
   不过实践下来，正常的通信过程不太会 `OOM`，但当网络环境不好，同时传输报文很大时，确实会出现限流的情况。
 
-## RPC
-### 通用RPC流程
+## 5. RPC
+### 5.1. 通用RPC流程
 ![通用RPC流程](./img/rpc.png)
 
 其中
@@ -87,9 +91,9 @@ Netty 的零拷贝则不大一样，他完全站在了用户空间上，也就�
 
 [SOFARPC 框架之总体设计与扩展机制](https://mp.weixin.qq.com/s/ZKUmmFT0NWEAvba2MJiJfA)
 
-### jdk-rpc
+### 5.2. jdk-rpc
 jdk-rpc是不使用任何第三方包的简单rpc，使用JDK动态代理隐藏client和server的交互细节，使用ServerSocke和Socket进行网络通信。
-### laoqian-rpc老钱博客RPC
+### 5.3. laoqian-rpc老钱博客RPC
 
 博客地址：[老钱博客](https://juejin.im/post/5ad2a99ff265da238d51264d)
 
@@ -102,9 +106,9 @@ jdk-rpc是不使用任何第三方包的简单rpc，使用JDK动态代理隐藏c
 * 包含消息唯一ID
 * 使用JSON序列化
 
-### sofarpc-rpc
+### 5.4. sofarpc-rpc
 是`SOFARPC`蚂蚁金服`RPC`框架，`SOFARPC`是类似与`dubbo`的`RPC`框架，它有蚂蚁金服推出，底层通讯框架是`SOFABolt`，是蚂蚁金服基于`Netty`开发的。
-#### SOFARPC动态代理
+#### 5.4.1 SOFARPC动态代理
 1. SOFARPC默认的动态代理是使用javassist实现，通过生成接口的代理对象，在不提供接口实现类就可以创建接口的代理类。
 并且代理对象继承了`java.lang.reflect.Proxy`类，可以查看JavassistProxy类的getProxy方法，代码如下：
 ```java
@@ -335,7 +339,7 @@ public <T> T getProxy(Class<T> interfaceClass, Invoker proxyInvoker) {
 }
 ```
 
-## RPC博客
+## 6. RPC博客
 [剖析 | SOFARPC 框架之总体设计与扩展机制](https://mp.weixin.qq.com/s/ZKUmmFT0NWEAvba2MJiJfA)
 [蚂蚁通信框架实践](https://mp.weixin.qq.com/s/JRsbK1Un2av9GKmJ8DK7IQ)
 
