@@ -88,13 +88,14 @@ Netty 的零拷贝则不大一样，他完全站在了用户空间上，也就�
 [SOFARPC 框架之总体设计与扩展机制](https://mp.weixin.qq.com/s/ZKUmmFT0NWEAvba2MJiJfA)
 
 ### jdk-rpc
-jdk-rpc是不使用任何第三方包的简单rpc。
+jdk-rpc是不使用任何第三方包的简单rpc，使用JDK动态代理隐藏client和server的交互细节，使用ServerSocke和Socket进行网络通信。
 ### laoqian-rpc老钱博客RPC
 
-博客地址：![老钱博客](https://juejin.im/post/5ad2a99ff265da238d51264d)
+博客地址：[老钱博客](https://juejin.im/post/5ad2a99ff265da238d51264d)
 
 这个RPC是使用Netty和fastjson实现，这个例子是计算斐波那契数和指数。斐波那契数输入输出比较简单，一个Integer，一个Long。 
 指数输入有两个值，输出除了计算结果外还包含计算耗时，以纳秒计算。之所以包含耗时，只是为了呈现一个完整的自定义的输入和输出类。
+
 * 自定义协议类型
 * 没有使用代理
 * 通过type来确定使用那个处理器处理请求
@@ -104,7 +105,7 @@ jdk-rpc是不使用任何第三方包的简单rpc。
 ### sofarpc-rpc
 是`SOFARPC`蚂蚁金服`RPC`框架，`SOFARPC`是类似与`dubbo`的`RPC`框架，它有蚂蚁金服推出，底层通讯框架是`SOFABolt`，是蚂蚁金服基于`Netty`开发的。
 #### SOFARPC动态代理
-SOFARPC默认的动态代理是使用javassist实现，通过生成接口的代理对象，在不提供接口实现类就可以创建接口的代理类。
+1. SOFARPC默认的动态代理是使用javassist实现，通过生成接口的代理对象，在不提供接口实现类就可以创建接口的代理类。
 并且代理对象继承了`java.lang.reflect.Proxy`类，可以查看JavassistProxy类的getProxy方法，代码如下：
 ```java
 @Override
@@ -293,7 +294,7 @@ public  java.lang.String sayHello(  java.lang.String arg0 ){
 }
 ```
 
-SOFARPC还提供了JDK的动态代理实现，一直困扰动态代理需要提供被代理类的示例，也就是服务接口的实现这，那么在RPC场景中，
+2. SOFARPC还提供了JDK的动态代理实现(JDKProxy)，一直困扰动态代理需要提供被代理类的示例，也就是服务接口的实现这，那么在RPC场景中，
 客户端是不知道服务接口实现类的实例的，那JDK动态代理（或者说大部分动态代理）如何在不提供服务接口实现类时，创建动态代理的，
 今天看了`SOFARPC`的`JDK`动态代理，在恍然大悟。原来JDK动态代理的`InvocationHandler`实现的`invoke`方法中，如果不调用`method.invoke`方法
 ，是不需要提供服务接口实现类的。`jdk-rpc`模块就是不使用接口实现类的JDK动态代理，在服务端提供接口和实现类的映射关系，代码如下：
@@ -303,6 +304,34 @@ private static final ConcurrentHashMap<String,Class<?>> INTERFACE_IMPLS = new Co
 //注册接口到服务
 static {
     INTERFACE_IMPLS.put(SayHello.class.getName(),SayHelloImpl.class);
+}
+```
+
+3. SOFARPC也提供了`byte buddy`动态代理，从代码量上看，`byte buddy`的实现要比javassist简单许多。代码如下：
+```java
+@Override
+public <T> T getProxy(Class<T> interfaceClass, Invoker proxyInvoker) {
+
+    Class<? extends T> cls = PROXY_CLASS_MAP.get(interfaceClass);
+    if (cls == null) {
+        cls = new ByteBuddy()
+            .subclass(interfaceClass)
+            .method(
+                ElementMatchers.isDeclaredBy(interfaceClass).or(ElementMatchers.isEquals())
+                    .or(ElementMatchers.isToString().or(ElementMatchers.isHashCode())))
+            .intercept(MethodDelegation.to(new BytebuddyInvocationHandler(proxyInvoker), "handler"))
+            .make()
+            .load(interfaceClass.getClassLoader(), ClassLoadingStrategy.Default.INJECTION)
+            .getLoaded();
+
+        PROXY_CLASS_MAP.put(interfaceClass, cls);
+    }
+    try {
+        return cls.newInstance();
+    } catch (Throwable t) {
+        throw new SofaRpcRuntimeException("construct proxy with bytebuddy occurs error", t);
+    }
+
 }
 ```
 

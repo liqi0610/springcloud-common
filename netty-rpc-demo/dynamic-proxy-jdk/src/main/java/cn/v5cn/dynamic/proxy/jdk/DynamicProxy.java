@@ -40,6 +40,8 @@ class HelloDelegate implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         System.out.println("调用前。。。。。");
+        //target是被代理的接口实现类，所有需要实现类的对象。如果只是代理，
+        // 不发起invoke就不需要接口实现对象。RPC就是这样实现，所以client端不需要指定实现类示例。
         Object invoke = method.invoke(target, args);
         System.out.println("调用后。。。。。");
         return invoke;
