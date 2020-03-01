@@ -20,6 +20,7 @@
         <module>laoqian-rpc</module>
         <module>jdk-rpc</module>
         <module>jdk-spi</module>
+        <module>sofarpc-rpc</module>
     </modules>
 
 

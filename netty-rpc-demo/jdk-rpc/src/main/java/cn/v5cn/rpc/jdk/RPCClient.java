@@ -21,7 +21,7 @@ public class RPCClient<S> implements InvocationHandler {
     public S importer(final Class<?> serviceClass, final InetSocketAddress addr) {
         this.serviceClass = serviceClass;
         this.addr = addr;
-        return (S) Proxy.newProxyInstance(serviceClass.getClassLoader(), new Class<?>[]{serviceClass.getInterfaces()[0]},this);
+        return (S) Proxy.newProxyInstance(serviceClass.getClassLoader(), new Class<?>[]{serviceClass},this);
     }
 
     @Override

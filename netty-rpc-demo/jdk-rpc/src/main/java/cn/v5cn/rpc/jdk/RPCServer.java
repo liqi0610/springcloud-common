@@ -8,10 +8,7 @@ import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -22,6 +19,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2020-02-27 16:07
  */
 public class RPCServer {
+
+    private static final ConcurrentHashMap<String,Class<?>> INTERFACE_IMPLS = new ConcurrentHashMap<>();
+
+    //注册接口到服务
+    static {
+        INTERFACE_IMPLS.put(SayHello.class.getName(),SayHelloImpl.class);
+    }
 
     // 通过ThreadPoolExecutor创建线程池
     private final static ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(5,
@@ -81,7 +85,7 @@ public class RPCServer {
                 input = new ObjectInputStream(socket.getInputStream());
 
                 String interfaceName = input.readUTF();
-                Class<?> service = Class.forName(interfaceName);
+                Class<?> service = INTERFACE_IMPLS.get(interfaceName);
 
                 String methodName = input.readUTF();
                 Class<?>[] parameterTypes = (Class<?>[]) input.readObject();

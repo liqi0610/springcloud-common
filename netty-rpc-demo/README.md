@@ -101,6 +101,211 @@ jdk-rpc是不使用任何第三方包的简单rpc。
 * 包含消息唯一ID
 * 使用JSON序列化
 
+### sofarpc-rpc
+是`SOFARPC`蚂蚁金服`RPC`框架，`SOFARPC`是类似与`dubbo`的`RPC`框架，它有蚂蚁金服推出，底层通讯框架是`SOFABolt`，是蚂蚁金服基于`Netty`开发的。
+#### SOFARPC动态代理
+SOFARPC默认的动态代理是使用javassist实现，通过生成接口的代理对象，在不提供接口实现类就可以创建接口的代理类。
+并且代理对象继承了`java.lang.reflect.Proxy`类，可以查看JavassistProxy类的getProxy方法，代码如下：
+```java
+@Override
+@SuppressWarnings("unchecked")
+public <T> T getProxy(Class<T> interfaceClass, Invoker proxyInvoker) {
+    StringBuilder debug = null;
+    if (LOGGER.isDebugEnabled()) {
+        debug = new StringBuilder();
+    }
+    try {
+        Class clazz = PROXY_CLASS_MAP.get(interfaceClass);
+        if (clazz == null) {
+            //生成代理类
+            String interfaceName = ClassTypeUtils.getTypeStr(interfaceClass);
+            ClassPool mPool = ClassPool.getDefault();
+            mPool.appendClassPath(new LoaderClassPath(ClassLoaderUtils.getClassLoader(JavassistProxy.class)));
+            CtClass mCtc = mPool.makeClass(interfaceName + "_proxy_" + counter.getAndIncrement());
+            if (interfaceClass.isInterface()) {
+                mCtc.addInterface(mPool.get(interfaceName));
+            } else {
+                throw new IllegalArgumentException(interfaceClass.getName() + " is not an interface");
+            }
+
+            // 继承 java.lang.reflect.Proxy
+            mCtc.setSuperclass(mPool.get(java.lang.reflect.Proxy.class.getName()));
+            CtConstructor constructor = new CtConstructor(null, mCtc);
+            constructor.setModifiers(Modifier.PUBLIC);
+            constructor.setBody("{super(new " + UselessInvocationHandler.class.getName() + "());}");
+            mCtc.addConstructor(constructor);
+
+            List<String> fieldList = new ArrayList<String>();
+            List<String> methodList = new ArrayList<String>();
+
+            fieldList.add("public " + Invoker.class.getCanonicalName() + " proxyInvoker = null;");
+            createMethod(interfaceClass, fieldList, methodList);
+
+            for (String fieldStr : fieldList) {
+                if (LOGGER.isDebugEnabled()) {
+                    debug.append(fieldStr).append("\n");
+                }
+                mCtc.addField(CtField.make(fieldStr, mCtc));
+            }
+            for (String methodStr : methodList) {
+                if (LOGGER.isDebugEnabled()) {
+                    debug.append(methodStr).append("\n");
+                }
+                mCtc.addMethod(CtMethod.make(methodStr, mCtc));
+            }
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("javassist proxy of interface: {} \r\n{}", interfaceClass,
+                    debug != null ? debug.toString() : "");
+            }
+            clazz = mCtc.toClass();
+            PROXY_CLASS_MAP.put(interfaceClass, clazz);
+        }
+        Object instance = clazz.newInstance();
+        clazz.getField("proxyInvoker").set(instance, proxyInvoker);
+        return (T) instance;
+    } catch (Exception e) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("javassist proxy of interface: {} \r\n{}", interfaceClass,
+                debug != null ? debug.toString() : "");
+        }
+        throw new SofaRpcRuntimeException("", e);
+    }
+}
+
+private void createMethod(Class<?> interfaceClass, List<String> fieldList, List<String> resultList) {
+    Method[] methodAry = interfaceClass.getMethods();
+    StringBuilder sb = new StringBuilder(512);
+    int mi = 0;
+    for (Method m : methodAry) {
+        mi++;
+        if (Modifier.isNative(m.getModifiers()) || Modifier.isFinal(m.getModifiers())) {
+            continue;
+        }
+        Class<?>[] mType = m.getParameterTypes();
+        Class<?> returnType = m.getReturnType();
+
+        sb.append(Modifier.toString(m.getModifiers()).replace("abstract", ""))
+            .append(" ").append(ClassTypeUtils.getTypeStr(returnType)).append(" ").append(m.getName())
+            .append("( ");
+        int c = 0;
+
+        for (Class<?> mp : mType) {
+            sb.append(" ").append(mp.getCanonicalName()).append(" arg").append(c).append(" ,");
+            c++;
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append(")");
+        Class<?>[] exceptions = m.getExceptionTypes();
+        if (exceptions.length > 0) {
+            sb.append(" throws ");
+            for (Class<?> exception : exceptions) {
+                sb.append(exception.getCanonicalName()).append(" ,");
+            }
+            sb = sb.deleteCharAt(sb.length() - 1);
+        }
+        sb.append("{");
+
+        sb.append(" Class clazz = ").append(interfaceClass.getCanonicalName()).append(".class;");
+        sb.append(" ").append(Method.class.getCanonicalName()).append(" method =  method_").append(mi).append(";");
+        sb.append(" Class[] paramTypes = new Class[").append(c).append("];");
+        sb.append(" Object[] paramValues = new Object[").append(c).append("];");
+        StringBuilder methodSig = new StringBuilder();
+        for (int i = 0; i < c; i++) {
+            sb.append("paramValues[").append(i).append("] = ($w)$").append(i + 1).append(";");
+            sb.append("paramTypes[").append(i).append("] = ").append(mType[i].getCanonicalName()).append(".class;");
+            methodSig.append("," + mType[i].getCanonicalName() + ".class");
+        }
+
+        fieldList.add("private " + Method.class.getCanonicalName() + " method_" + mi + " = "
+            + ReflectUtils.class.getCanonicalName() + ".getMethod("
+            + interfaceClass.getCanonicalName() + ".class, \"" + m.getName() + "\", "
+            + (c > 0 ? "new Class[]{" + methodSig.toString().substring(1) + "}" : "new Class[0]") + ");"
+            );
+
+        sb.append(SofaRequest.class.getCanonicalName()).append(" request = ")
+            .append(MessageBuilder.class.getCanonicalName())
+            .append(".buildSofaRequest(clazz, method, paramTypes, paramValues);");
+        sb.append(SofaResponse.class.getCanonicalName()).append(" response = ")
+            .append("proxyInvoker.invoke(request);");
+        sb.append("if(response.isError()){");
+        sb.append("  throw new ").append(SofaRpcException.class.getName()).append("(")
+            .append(RpcErrorType.class.getName())
+            .append(".SERVER_UNDECLARED_ERROR,").append(" response.getErrorMsg());");
+        sb.append("}");
+
+        sb.append("Object ret = response.getAppResponse();");
+        sb.append("if (ret instanceof Throwable) {");
+        sb.append("    throw (Throwable) ret;");
+        sb.append("} else {");
+        if (returnType.equals(void.class)) {
+            sb.append(" return;");
+        } else {
+            sb.append(" return ").append(asArgument(returnType, "ret")).append(";");
+        }
+        sb.append("}");
+
+        sb.append("}");
+
+        resultList.add(sb.toString());
+        sb.delete(0, sb.length());
+    }
+
+    // toString()
+    sb.append("public String toString() {");
+    sb.append("  return proxyInvoker.toString();");
+    sb.append("}");
+    resultList.add(sb.toString());
+    // hashCode()
+    sb.delete(0, sb.length());
+    sb.append("public int hashCode() {");
+    sb.append("  return proxyInvoker.hashCode();");
+    sb.append("}");
+    resultList.add(sb.toString());
+    // equals()
+    sb.delete(0, sb.length());
+    sb.append("public boolean equals(Object obj) {");
+    sb.append("  return this == obj || (getClass().isInstance($1) && proxyInvoker.equals(")
+        .append(JavassistProxy.class.getName()).append(".parseInvoker($1)));");
+    sb.append("}");
+    resultList.add(sb.toString());
+}
+```
+其中上面的createMethod方法最后生成的代码是：
+```java
+public  java.lang.String sayHello(  java.lang.String arg0 ){ 
+    Class clazz = cn.v5cn.sofarpc.rpc.HelloService.class; 
+    java.lang.reflect.Method method =  method_1; 
+    Class[] paramTypes = new Class[1]; 
+    Object[] paramValues = new Object[1];
+    paramValues[0] = ($w)$1;
+    paramTypes[0] = java.lang.String.class;
+    com.alipay.sofa.rpc.core.request.SofaRequest request = com.alipay.sofa.rpc.message.MessageBuilder.buildSofaRequest(clazz, method, paramTypes, paramValues);
+    com.alipay.sofa.rpc.core.response.SofaResponse response = proxyInvoker.invoke(request);
+    if(response.isError()){  
+        throw new com.alipay.sofa.rpc.core.exception.SofaRpcException(com.alipay.sofa.rpc.core.exception.RpcErrorType.SERVER_UNDECLARED_ERROR, response.getErrorMsg());
+    }
+    Object ret = response.getAppResponse();
+    if (ret instanceof Throwable) {    
+        throw (Throwable) ret;
+    } else { 
+        return (java.lang.String)ret;
+    }
+}
+```
+
+SOFARPC还提供了JDK的动态代理实现，一直困扰动态代理需要提供被代理类的示例，也就是服务接口的实现这，那么在RPC场景中，
+客户端是不知道服务接口实现类的实例的，那JDK动态代理（或者说大部分动态代理）如何在不提供服务接口实现类时，创建动态代理的，
+今天看了`SOFARPC`的`JDK`动态代理，在恍然大悟。原来JDK动态代理的`InvocationHandler`实现的`invoke`方法中，如果不调用`method.invoke`方法
+，是不需要提供服务接口实现类的。`jdk-rpc`模块就是不使用接口实现类的JDK动态代理，在服务端提供接口和实现类的映射关系，代码如下：
+```java
+private static final ConcurrentHashMap<String,Class<?>> INTERFACE_IMPLS = new ConcurrentHashMap<>();
+
+//注册接口到服务
+static {
+    INTERFACE_IMPLS.put(SayHello.class.getName(),SayHelloImpl.class);
+}
+```
+
 ## RPC博客
 [剖析 | SOFARPC 框架之总体设计与扩展机制](https://mp.weixin.qq.com/s/ZKUmmFT0NWEAvba2MJiJfA)
 [蚂蚁通信框架实践](https://mp.weixin.qq.com/s/JRsbK1Un2av9GKmJ8DK7IQ)
