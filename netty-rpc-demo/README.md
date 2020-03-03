@@ -2,6 +2,9 @@
 ## 1. 动态代理
 ### 1.1. dynamic-proxy-jdk
 JDK自带的动态代理
+
+[dynamic-proxy-jdk](./dynamic-proxy-jdk/README.md)
+
 ### 1.2. dynamic-proxy-javassist
 javassist动态代理，`Javassist`的定位是能够操纵底层字节码，所以使用起来并不简单，要生成动态代理类恐怕是有点复杂了。
 但好的方面是，通过`Javassist`生成字节码，不需要通过反射完成方法调用，所以性能肯定是更胜一筹的。在使用中，我们要注意一个问题，
