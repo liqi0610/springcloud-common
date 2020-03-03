@@ -17,11 +17,12 @@
         <module>dynamic-proxy-javassist</module>
         <module>serialize-hessian</module>
         <module>serialize-protobuf</module>
-        <module>laoqian-rpc</module>
-        <module>jdk-rpc</module>
+        <module>rpc-laoqian</module>
+        <module>rpc-jdk</module>
         <module>jdk-spi</module>
-        <module>sofarpc-rpc</module>
+        <module>rpc-sofarpc</module>
         <module>dynamic-proxy-byte-buddy</module>
+        <module>rpc-grpc</module>
     </modules>
 
 
