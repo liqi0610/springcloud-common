@@ -9,9 +9,15 @@ JDK自带的动态代理
 javassist动态代理，`Javassist`的定位是能够操纵底层字节码，所以使用起来并不简单，要生成动态代理类恐怕是有点复杂了。
 但好的方面是，通过`Javassist`生成字节码，不需要通过反射完成方法调用，所以性能肯定是更胜一筹的。在使用中，我们要注意一个问题，
 通过`Javassist`生成一个代理类后，此`CtClass`对象会被冻结起来，不允许再修改；否则，再次生成时会报错。
+
+[dynamic-proxy-javassist](./dynamic-proxy-javassist/README.md)
+
 ### 1.3. dynamic-proxy-byte-buddy
 `byte buddy`实现的动态代理，`Byte Buddy`在动态代理工具类中属于后起之秀，在很多优秀的项目中，像 `Spring`、`Jackson`都用到了`Byte Buddy`来完成底层代理。
 相比`Javassist`，`Byte Buddy`提供了更容易操作的`API`，编写的代码可读性更高。更重要的是，生成的代理类执行速度比`Javassist`更快。
+
+[dynamic-proxy-byte-buddy](./dynamic-proxy-byte-buddy/README.md)
+
 ## 2. 序列化
 ### 2.1. serialize-hessian
 hessian序列化
