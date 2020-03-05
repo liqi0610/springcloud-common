@@ -29,20 +29,21 @@
             <artifactId>spring-boot-admin-starter-server</artifactId>
             <version>2.0.6</version>
         </dependency>
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-server-ui</artifactId>
-            <version>2.0.6</version>
-        </dependency>
+<!--        spring-boot-admin-starter-server已经包含ui的依赖了-->
+<!--        <dependency>-->
+<!--            <groupId>de.codecentric</groupId>-->
+<!--            <artifactId>spring-boot-admin-server-ui</artifactId>-->
+<!--            <version>2.0.6</version>-->
+<!--        </dependency>-->
 
-        <!-- 需要监控的项目工程，发送数据到监控显示端 -->
+        <!-- 需要监控的项目工程，发送数据到监控显示端  client的中已经包含了，actuator和jolokia-core了-->
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
             <version>2.0.6</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
@@ -51,7 +52,7 @@
             <groupId>org.jolokia</groupId>
             <artifactId>jolokia-core</artifactId>
             <version>1.6.2</version>
-        </dependency>
+        </dependency>-->
 
 <!--        <dependency>
             <groupId>org.jolokia</groupId>
