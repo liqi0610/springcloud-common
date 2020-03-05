@@ -62,7 +62,7 @@ public class HelloClient {
     public static void main(String[] args) throws InterruptedException {
         HelloClient client = new HelloClient("localhost",50051);
         try {
-            client.say("world");
+            client.say("zhangsan");
         } finally {
             client.shutdown();
         }
