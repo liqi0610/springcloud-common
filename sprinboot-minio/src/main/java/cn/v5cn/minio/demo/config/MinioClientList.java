@@ -16,7 +16,7 @@ public class MinioClientList {
 
     private final List<MinioClient> CLIENTS;
 
-    private static AtomicInteger currIndex = new AtomicInteger(0);
+    private static final AtomicInteger CURR_INDEX = new AtomicInteger(0);
 
     private static final ReentrantLock LOCK = new ReentrantLock();
 
@@ -33,13 +33,20 @@ public class MinioClientList {
     }
 
     public MinioClient getClient() {
+//        LOCK.lock();
+//        int index = currIndex.getAndAdd(1);
+//        if(index >= this.CLIENTS.size()) {
+//            currIndex.set(0);
+//            index = currIndex.getAndAdd(1);
+//        }
+//        LOCK.unlock();
+//        return this.CLIENTS.get(index);
         LOCK.lock();
-        int index = currIndex.getAndAdd(1);
-        if(index >= this.CLIENTS.size()) {
-            currIndex.set(0);
-            index = currIndex.getAndAdd(1);
-        }
+        //一个取模搞定轮训
+        int count = CURR_INDEX.getAndIncrement(); //调用次数
+        int size = this.CLIENTS.size();           //服务数量
+        int i = count % size;                     //本次要使用的服务下标
         LOCK.unlock();
-        return this.CLIENTS.get(index);
+        return this.CLIENTS.get(i);
     }
 }
