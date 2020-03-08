@@ -352,3 +352,6 @@ public <T> T getProxy(Class<T> interfaceClass, Invoker proxyInvoker) {
 [剖析 | SOFARPC 框架之总体设计与扩展机制](https://mp.weixin.qq.com/s/ZKUmmFT0NWEAvba2MJiJfA)
 [蚂蚁通信框架实践](https://mp.weixin.qq.com/s/JRsbK1Un2av9GKmJ8DK7IQ)
 
+## 7. queue-disruptor
+[`queue-disruptor`](./queue-disruptor/README.md)是队列`Disruptor`的例子。
+

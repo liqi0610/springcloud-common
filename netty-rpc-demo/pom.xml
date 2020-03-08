@@ -23,6 +23,7 @@
         <module>rpc-sofarpc</module>
         <module>dynamic-proxy-byte-buddy</module>
         <module>rpc-grpc</module>
+        <module>queue-disruptor</module>
     </modules>
 
 
