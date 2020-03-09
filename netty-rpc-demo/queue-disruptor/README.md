@@ -59,3 +59,10 @@ disruptor.shutdown();//关闭 disruptor，方法会堵塞，直至所有的事�
 ```
 
 [原作者](https://www.jianshu.com/p/8473bbb556af)
+
+# 参考文章
+![Java队列继承图](./img/1.png)
+
+* [Java中的队列](https://www.jianshu.com/p/cdeab52c0a07)
+
+* [你应该知道的高性能无锁队列Disruptor](https://juejin.im/post/5b5f10d65188251ad06b78e3)
