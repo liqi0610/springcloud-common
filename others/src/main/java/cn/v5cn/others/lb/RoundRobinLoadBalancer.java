@@ -13,6 +13,7 @@ public class RoundRobinLoadBalancer {
     public static void main(String[] args) {
         //i为调用次数
         for(int i = 0; i<1000; i++) {
+            //在现实项目中一般使用 AtomicInteger来递增获得i，然后取模与服务个数。
             int i1 = i % LEN; //获取本次使用服务的下标
             System.out.println("轮训：" + i1);
         }
