@@ -21,3 +21,6 @@ REPLACE INTO users (id,name,age) VALUES(123, '贾斯丁比伯', 22);
 使用`REPLACE`的最大好处就是可以将`DELETE`和`INSERT`合二为一，形成一个原子操作。这样就可以不必考虑在同时使用`DELETE`和`INSERT`时添加事务等复杂操作了。
 在使用`REPLACE`时，表中必须有唯一索引，而且这个索引所在的字段不能允许空值，否则`REPLACE`就和`INSERT`完全一样的。在执行`REPLACE`后，系统返回了所影响的行数，如果返回`1`，
 说明在表中并没有重复的记录，如果返回`2`，说明有一条重复记录，系统自动先调用了`DELETE`删除这条记录，然后再记录用`INSERT`来插入这条记录。
+
+## 参考
+[MySql_插入记录时,存在就更新（或不做任何动作），不存在就添加](https://blog.csdn.net/BuptZhengChaoJie/article/details/50992923)
