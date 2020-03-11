@@ -1,4 +1,4 @@
-## ignore关键字
+## 1. ignore关键字
 ```sql
 INSERT IGNORE INTO `sys_dict_type` (`id`, `name`, `status`, `create_time`, `update_time`)
 VALUES
@@ -6,7 +6,7 @@ VALUES
 ```
 上面的`sql`的`insert`语句中包含`ignore`语句，执行结果是，如果主键存在就忽略，如果不存在就新增。对应上面的语句就是`34`这个主键。
 
-## ON DUPLICATE KEY UPDATE
+## 2. ON DUPLICATE KEY UPDATE
 ```sql
 INSERT IGNORE INTO `sys_dict_type` (`id`, `name`, `status`, `create_time`, `update_time`)
 VALUES
@@ -14,7 +14,7 @@ VALUES
 ```
 上面的语句是如果主键`34`不存在就新增一条记录，如果`34`存在就把`name`修改成【知识库分类2】。
 
-## REPLACE
+## 3. REPLACE
 ```sql
 REPLACE INTO users (id,name,age) VALUES(123, '贾斯丁比伯', 22); 
 ```
