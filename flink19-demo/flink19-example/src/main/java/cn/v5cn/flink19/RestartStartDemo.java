@@ -21,7 +21,7 @@ public class RestartStartDemo {
         env.enableCheckpointing(5000);
 
         //更改重启策略，设置对多重启3次，每次延迟2秒。
-        env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(3,2000));
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3,2000));
 
         DataStreamSource<String> socketStream = env.socketTextStream("localhost", 9999);
 
