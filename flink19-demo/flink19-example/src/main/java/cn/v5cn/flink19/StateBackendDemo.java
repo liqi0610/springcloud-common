@@ -28,7 +28,7 @@ public class StateBackendDemo {
         //设置StateBackend，FsStateBackend是使用文件系统保存State，可以是本地文件或者是hdfs。
         env.setStateBackend(new FsStateBackend("file:///Users/zhuyanwei/workspace/springcloud-common/flink19-demo/ck"));
 
-        //SubTask在clean后，Checkpoint的State不删除，默认是删除CheckpointConfig.ExternalizedCheckpointCleanup.DELETE_ON_CANCELLATION
+        //程序异常退出或者认为cancel掉，Checkpoint的State不删除，默认是删除CheckpointConfig.ExternalizedCheckpointCleanup.DELETE_ON_CANCELLATION
         env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
 
         DataStreamSource<String> socketStream = env.socketTextStream("localhost", 9999);
