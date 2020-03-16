@@ -3,6 +3,7 @@ package cn.v5cn.flink19;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.runtime.state.StateBackend;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -26,7 +27,7 @@ public class StateBackendDemo {
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3,2000));
 
         //设置StateBackend，FsStateBackend是使用文件系统保存State，可以是本地文件或者是hdfs。
-        env.setStateBackend(new FsStateBackend("file:///Users/zhuyanwei/workspace/springcloud-common/flink19-demo/ck"));
+        env.setStateBackend((StateBackend)new FsStateBackend("file:///Users/zhuyanwei/workspace/springcloud-common/flink19-demo/ck"));
 
         //程序异常退出或者认为cancel掉，Checkpoint的State不删除，默认是删除CheckpointConfig.ExternalizedCheckpointCleanup.DELETE_ON_CANCELLATION
         env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
