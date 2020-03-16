@@ -37,3 +37,14 @@ protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
 ```
 2、`lhm`子包是自定义的`HashMap`+链表的实现方式。
 3、`casfaa`子包是使用锁、CAS和FAA原语来并发操作同一个资源。
+
+### Java nio
+`java.io`中最为核心的一个概念是流(`Stream`),面向流的编程。`Java`中,一个流要么是输入流,要么是输出流,不可能同时既是输入流又是输出流。
+`java.nio`中拥有3个核心概念: `Selector`, `Channel`与 `Buffer`。在`java.nio`中,我们是面向块(`block`)或是缓冲区(`buffer`)编程的。
+`Buffer`本身就是一块内存,底层实现上,它实际上是个数组。数据的读、写都是通过 `Buffer`来实现的。
+#### Selector、Channel和Buffer关系图
+![Selector、Channel和Buffer关系图](./img/java-nio.png)
+
+[Java NIO](https://scala.cool/2017/11/java-nio/)
+
+[Java NIO编程实例之三Selector](https://zhuanlan.zhihu.com/p/26243285)
