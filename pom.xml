@@ -49,6 +49,7 @@
 		<module>flink19-demo</module>
         <module>kafka-demo</module>
         <module>netty-rpc-demo</module>
+        <module>springboot-xxl-job</module>
     </modules>
 
 	<properties>
