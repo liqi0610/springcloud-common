@@ -3,7 +3,7 @@
 单机安装的kafka比较简单，解压后只需要2部就能启动好。因为kafka是zookeeper强依赖的所有需要先启动zookeeper。kafka有自带的zookeeper不需要单独下载。
 1. 启动zookeeper，kafka解压目录。
    ```shell script
-    ./bin/zookeeper-server-start.sh ../config/zookeeper.properties
+    ./bin/zookeeper-server-start.sh ./config/zookeeper.properties
    ```
 2. 启动kafka。
    ```shell script
@@ -18,11 +18,11 @@
 ```
 ### 生产者
 ```shell script
-bin/kafka-console-producer.sh --broker-list localhost:9092 --topic 主题名称(Topic)
+./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic 主题名称(Topic)
 ```
 ### 消费者
 ```shell script
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic 主题名称(Topic) --from-beginning
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic 主题名称(Topic) --from-beginning
 ```
 
 ## 集群配置
