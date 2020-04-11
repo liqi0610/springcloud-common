@@ -1,4 +1,4 @@
-package cn.v5cn.springboot.redisson.controller;
+package cn.v5cn.springboot.redisson.service;
 
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RDelayedQueue;
@@ -21,6 +21,10 @@ public class SendReadMsg {
     @Autowired
     private RedissonClient redisson;
 
+    /**
+     * 可以发送普通队列消息和延时队列消息
+     * @param msg
+     */
     public void sendMsg(String msg){
         RBlockingQueue<String> demo = redisson.getBlockingQueue("demo");
 //        RDelayedQueue<String> delayedQueue = redisson.getDelayedQueue(demo);

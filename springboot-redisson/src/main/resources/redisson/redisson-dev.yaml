@@ -7,7 +7,7 @@ singleServerConfig:
   retryInterval: 1500
   reconnectionTimeout: 3000
   failedAttempts: 3
-  password: ${REDIS_PWD:-123456}
+  password: ${REDIS_PWD:-null}
   subscriptionsPerConnection: 5
   clientName: null
   address: "redis://${REDIS_HOST:-127.0.0.1}:${REDIS_PORT:-6379}"

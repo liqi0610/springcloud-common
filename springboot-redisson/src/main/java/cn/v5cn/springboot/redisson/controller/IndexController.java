@@ -1,5 +1,7 @@
 package cn.v5cn.springboot.redisson.controller;
 
+import cn.v5cn.springboot.redisson.service.DistributedLockService;
+import cn.v5cn.springboot.redisson.service.SendReadMsg;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 public class IndexController {
@@ -22,6 +23,9 @@ public class IndexController {
 
     @Autowired
     private RedissonClient redisson;
+
+    @Autowired
+    private DistributedLockService lockService;
 
     @GetMapping("/index")
     public Object index() {
@@ -39,6 +43,13 @@ public class IndexController {
 //        System.out.println("消息发送完成：" + format);
 //        delayedQueue.destroy();
         return "aaaa";
+    }
+
+    @GetMapping("/index3")
+    public String index3() {
+        lockService.lockService();
+        sendReadMsg.sendMsg("dda" + System.currentTimeMillis());
+        return "好";
     }
 
     @Async
