@@ -10,6 +10,11 @@ ffmpeg -i output.mp4 -codec copy -vbsf h264_mp4toannexb -map 0 -f segment -segme
 ```
 其中`1.mp4`是需要截图的视频文件，`-ss 0:0:0.0`是需要截图的位置（秒数），`-s 600x450`截图大小，`4.jpg`是截图图片文件的名称。
 
+## 视频压缩
+```shell script
+ffmpeg -i input.mp4 -vf scale=1280:-1 -c:v libx264 -preset veryslow -crf 24 output.mp4
+```
+请注意，如果你尝试减小视频文件的大小，你将损失视频质量。如果 24 太有侵略性，你可以降低 -crf 值到或更低值。
 <br/>
 <br/>
 
@@ -488,3 +493,168 @@ ffmpeg -i input.mp4 -vf ass=subtitle.ass output.mp4
 参考：
 
 - http://blog.neten.de/posts/2013/10/06/use-ffmpeg-to-burn-subtitles-into-the-video/
+
+## 视频压缩命令
+> 微信不允许传输超过25兆的视频，在这里设置分辨率800X400
+> ```shell script
+> ffmpeg -y -i video.mp4 -ss 00:00:00.0 -t 00:06:00.0 -ab 56k -ar 44100 -b:v 2200k -r 29.97 -s 480x800 out.mp4
+> ```
+
+## 参数说明
+1. 通用选项
+    ```shell script
+    -L license
+    -h 帮助
+    -fromats 显示可用的格式，编解码的，协议的...
+    -f fmt 强迫采用格式fmt
+    -I filename 输入文件
+    -y 覆盖输出文件
+    -t duration 设置纪录时间 hh:mm:ss[.xxx]格式的记录时间也支持
+    -ss position 搜索到指定的时间 [-]hh:mm:ss[.xxx]的格式也支持
+    -title string 设置标题
+    -author string 设置作者
+    -copyright string 设置版权
+    -comment string 设置评论
+    -target type 设置目标文件类型(vcd,svcd,dvd) 所有的格式选项（比特率，编解码以及缓冲区大小）自动设置，只需要输入如下的就可以了：ffmpeg -i myfile.avi -target vcd /tmp/vcd.mpg
+    -hq 激活高质量设置
+    -itsoffset offset 设置以秒为基准的时间偏移，该选项影响所有后面的输入文件。该偏移被加到输入文件的时戳，定义一个正偏移意味着相应的流被延迟了 offset秒。 [-]hh:mm:ss[.xxx]的格式也支持
+    ```
+2. 视频选项
+    ```shell script
+    -b bitrate 设置比特率，缺省200kb/s
+    -r fps 设置帧频 缺省25
+    -s size 设置帧大小 格式为WXH 缺省160X128.下面的简写也可以直接使用：
+    Sqcif 128X96 qcif 176X144 cif 252X288 4cif 704X576
+    -aspect aspect 设置横纵比 4:3 16:9 或 1.3333 1.7777
+    -croptop size 设置顶部切除带大小 像素单位
+    -cropbottom size –cropleft size –cropright size
+    -padtop size 设置顶部补齐的大小 像素单位
+    -padbottom size –padleft size –padright size –padcolor color 设置补齐条颜色(hex,6个16进制的数，红:绿:兰排列，比如 000000代表黑色)
+    -vn 不做视频记录
+    -bt tolerance 设置视频码率容忍度kbit/s
+    -maxrate bitrate设置最大视频码率容忍度
+    -minrate bitreate 设置最小视频码率容忍度
+    -bufsize size 设置码率控制缓冲区大小
+    -vcodec codec 强制使用codec编解码方式。如果用copy表示原始编解码数据必须被拷贝。
+    -sameq 使用同样视频质量作为源（VBR）
+    -pass n 选择处理遍数（1或者2）。两遍编码非常有用。第一遍生成统计信息，第二遍生成精确的请求的码率
+    -passlogfile file 选择两遍的纪录文件名为file
+    ```
+3. 高级视频选项
+    ```shell script
+    -g gop_size 设置图像组大小
+    -intra 仅适用帧内编码
+    -qscale q 使用固定的视频量化标度(VBR)
+    -qmin q 最小视频量化标度(VBR)
+    -qmax q 最大视频量化标度(VBR)
+    -qdiff q 量化标度间最大偏差 (VBR)
+    -qblur blur 视频量化标度柔化(VBR)
+    -qcomp compression 视频量化标度压缩(VBR)
+    -rc_init_cplx complexity 一遍编码的初始复杂度
+    -b_qfactor factor 在p和b帧间的qp因子
+    -i_qfactor factor 在p和i帧间的qp因子
+    -b_qoffset offset 在p和b帧间的qp偏差
+    -i_qoffset offset 在p和i帧间的qp偏差
+    -rc_eq equation 设置码率控制方程 默认tex^qComp
+    -rc_override override 特定间隔下的速率控制重载
+    -me method 设置运动估计的方法 可用方法有 zero phods log x1 epzs(缺省) full
+    -dct_algo algo 设置dct的算法 可用的有 0 FF_DCT_AUTO 缺省的DCT 1 FF_DCT_FASTINT 2 FF_DCT_INT 3 FF_DCT_MMX 4 FF_DCT_MLIB 5 FF_DCT_ALTIVEC
+    -idct_algo algo 设置idct算法。可用的有 0 FF_IDCT_AUTO 缺省的IDCT 1 FF_IDCT_INT 2 FF_IDCT_SIMPLE 3 FF_IDCT_SIMPLEMMX 4 FF_IDCT_LIBMPEG2MMX 5 FF_IDCT_PS2 6 FF_IDCT_MLIB 7 FF_IDCT_ARM 8 FF_IDCT_ALTIVEC 9 FF_IDCT_SH4 10 FF_IDCT_SIMPLEARM
+    -er n 设置错误残留为n 1 FF_ER_CAREFULL 缺省 2 FF_ER_COMPLIANT 3 FF_ER_AGGRESSIVE 4 FF_ER_VERY_AGGRESSIVE
+    -ec bit_mask 设置错误掩蔽为bit_mask,该值为如下值的位掩码 1 FF_EC_GUESS_MVS (default=enabled) 2 FF_EC_DEBLOCK (default=enabled)
+    -bf frames 使用frames B 帧，支持mpeg1,mpeg2,mpeg4
+    -mbd mode 宏块决策 0 FF_MB_DECISION_SIMPLE 使用mb_cmp 1 FF_MB_DECISION_BITS 2 FF_MB_DECISION_RD
+    -4mv 使用4个运动矢量 仅用于mpeg4
+    -part 使用数据划分 仅用于mpeg4
+    -bug param 绕过没有被自动监测到编码器的问题
+    -strict strictness 跟标准的严格性
+    -aic 使能高级帧内编码 h263+
+    -umv 使能无限运动矢量 h263+
+    -deinterlace 不采用交织方法
+    -interlace 强迫交织法编码仅对mpeg2和mpeg4有效。当你的输入是交织的并且你想要保持交织以最小图像损失的时候采用该选项。可选的方法是不交织，但是损失更大
+    -psnr 计算压缩帧的psnr
+    -vstats 输出视频编码统计到vstats_hhmmss.log
+    -vhook module 插入视频处理模块 module 包括了模块名和参数，用空格分开
+    ```
+4. 音频选项
+    ```shell script
+    -ab bitrate 设置音频码率
+    -ar freq 设置音频采样率
+    -ac channels 设置通道 缺省为1
+    -an 不使能音频纪录
+    -acodec codec 使用codec编解码
+    ```
+5. 音频/视频捕获选项
+    ```shell script
+    -vd device 设置视频捕获设备。比如/dev/video0
+    -vc channel 设置视频捕获通道 DV1394专用
+    -tvstd standard 设置电视标准 NTSC PAL(SECAM)
+    -dv1394 设置DV1394捕获
+    -av device 设置音频设备 比如/dev/dsp
+    ```
+6. 高级选项
+    ```shell script
+    -map file:stream 设置输入流映射
+    -debug 打印特定调试信息
+    -benchmark 为基准测试加入时间
+    -hex 倾倒每一个输入包
+    -bitexact 仅使用位精确算法 用于编解码测试
+    -ps size 设置包大小，以bits为单位
+    -re 以本地帧频读数据，主要用于模拟捕获设备
+    -loop 循环输入流（只工作于图像流，用于ffserver测试）
+    ```
+   
+## [用ffmpeg命令行转压视频](https://segmentfault.com/a/1190000002502526)
+```shell script
+ffmpeg -i MVI_7274.MOV -vcodec libx264 -preset fast -crf 20 -y -vf "scale=1920:-1" -acodec libmp3lame -ab 128k a.mp4
+```
+### -preset
+`-preset`：指定编码的配置。x264编码算法有很多可供配置的参数，不同的参数值会导致编码的速度大相径庭，甚至可能影响质量。
+为了免去用户了解算法，然后手工配置参数的麻烦。x264提供了一些预设值，而这些预设值可以通过preset指定。
+这些预设值有包括：`ultrafast`，`superfast`，`veryfast`，`faster`，`fast`，`medium`，`slow`，`slower`，`veryslow`和`placebo`。`ultrafast`编码速度最快，但压缩率低，
+生成的文件更大，`placebo`则正好相反。`x264`所取的默认值为`medium`。需要说明的是，`preset`主要是影响编码的速度，并不会很大的影响编码出来的结果的质量。
+压缩高清电影时，我一般用`slow`或者`slower`，当你的机器性能很好时也可以使用`veryslow`，不过一般并不会带来很大的好处。
+
+### -crf
+`-crf`：这是最重要的一个选项，用于指定输出视频的质量，取值范围是`0-51`，默认值为`23`，数字越小输出视频的质量越高。
+这个选项会直接影响到输出视频的码率。一般来说，压制`480p`我会用20左右，压制`720p`我会用`16-18`，`1080p`我没尝试过。
+个人觉得，一般情况下没有必要低于16。最好的办法是大家可以多尝试几个值，每个都压几分钟，看看最后的输出质量和文件大小，自己再按需选择。
+
+其实还有`-b 1024k`这样的参数，但是我发现-crf设置上后-b就不管用了。根据我自己的简单尝试，压制5D2拍摄的一段18秒`1920x1080`的视频（下午自然光、图像简单、大面积白墙、只有一扇黑门）
+crf和压出来的文件大小关系如下：
+
+| crf | 文件大小|
+| ---- | ---- |
+| 16 | 54M |
+| 18 | 39M  |
+| 20  | 25M  |
+| 22	| 17M |
+| 24	| 11M |
+| 26	| 7.3M |
+| 28	| 5.0M |
+| 30	| 3.6M |
+| 32	| 2.7M |
+默认	14M（crf为23）
+又比较了一下crf在20、28、32时的视频质量，发现32还是能看出质量下降的，20的确非常精细，但28跟20之间的差别并不是那么大，crf值设置在26-28之间比较好。如果对尺寸有要求，
+什么都不设，用默认的也行（可能是31）。
+
+另外，关于`preset`，`slow`和`fast`只跟运行时间有关，`slow`跑的时间比`fast`长不少，`slow`出来的mp4文件会小一些（12M），`fast`出来的文件会大一些（14M），但视频质量的差距并不明显。
+
+如果把原视频尺寸从1920x1080缩小到960x540，则视频尺寸变为了：
+
+| crf	| 文件大小 |
+| ---- | ---- |
+| 16	| 11M |
+| 18	| 6.7M |
+| 20	| 4.4M |
+| 22	| 3.0M |
+| 24	| 2.1M |
+| 26	| 1.6M |
+| 28	| 1.3M |
+| 30	| 1.1M |
+| 32	| 893K |
+默认	2.5M（crf为23）
+综上，对质量要求较高时，选22以下；对尺寸要求非常高时，选26（但质量确实是会稍差一些），否则选24的性价比比较高（或者默认的23也行），如果对尺寸实在要求非常非常高，那就28以上吧。
+
+### -threads
+`-threads` n 来实施多线程的运算，充分利用多核cpu
