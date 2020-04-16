@@ -48,3 +48,7 @@ protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
 [Java NIO](https://scala.cool/2017/11/java-nio/)
 
 [Java NIO编程实例之三Selector](https://zhuanlan.zhihu.com/p/26243285)
+
+### ppt_to_image
+改包是使用Apache POI对ppt转换成图片。
+代码来自https://github.com/Hansanshi/pptutil
