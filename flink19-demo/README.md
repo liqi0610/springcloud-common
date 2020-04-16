@@ -1,5 +1,13 @@
 <div style="text-align: center;"><b>Flink1.9.2介绍</b></div>
 
+## 创建Flink Maven工程
+```shell script
+mvn archetype:generate \
+  -DarchetypeGroupId=org.apache.flink \
+  -DarchetypeArtifactId=flink-quickstart-java \
+  -DarchetypeVersion=1.10.0
+```
+
 ## Flink组件栈
 
 Flink是一个分层架构的系统，每一层所包含的组件都提供了特定的抽象，用来服务于上层组件。Flink分层的组件栈如下图所示：
