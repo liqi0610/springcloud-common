@@ -50,6 +50,7 @@
         <module>kafka-demo</module>
         <module>netty-rpc-demo</module>
         <module>springboot-xxl-job</module>
+        <module>spark245-demo</module>
     </modules>
 
 	<properties>
