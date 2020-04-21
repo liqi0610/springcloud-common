@@ -52,3 +52,6 @@ protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
 ### ppt_to_image
 改包是使用Apache POI对ppt转换成图片。
 代码来自https://github.com/Hansanshi/pptutil
+
+### command包
+command包是java执行shell脚本测试超时时间。

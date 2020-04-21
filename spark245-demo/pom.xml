@@ -10,6 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>spark245-demo</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>spark245-example</module>
+    </modules>
 
 
 </project>
