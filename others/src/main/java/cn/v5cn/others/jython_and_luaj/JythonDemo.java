@@ -1,4 +1,4 @@
-package cn.v5cn.others.jython;
+package cn.v5cn.others.jython_and_luaj;
 
 import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;

@@ -1,4 +1,4 @@
-package cn.v5cn.others.jython;
+package cn.v5cn.others.jython_and_luaj;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
@@ -24,7 +24,7 @@ public class LuaJDemo {
         LuaTable table = LuaTable.tableOf();
 
         LuaValue params = new LuaTable();
-        params.set("cmd1","D:\\software\\ffmpeg-20200113-7225479-win64-static\\bin\\ffmpeg -i D:\\users\\Destop\\output\\20200421104857.mp4 -threads 2 -vf scale=1280:-2 -c:v libx264 -preset fast -crf 24 D:\\users\\Destop\\output\\FFMPEG_1280X720.mp4");
+        params.set("cmd1","/Users/zhuyanwei/software/ffmpeg/ffmpeg -i /Users/zhuyanwei/software/ffmpeg/1.mp4 -threads 2 -vf scale=1280:-2 -c:v libx264 -preset fast -crf 24 /Users/zhuyanwei/software/ffmpeg/FFMPEG_1280X720.mp4");
         //params.set("cmd2","D:\\software\\ffmpeg-20200113-7225479-win64-static\\bin\\ffmpeg -i D:\\users\\Destop\\output\\FFMPEG_1280X720.mp4 -codec copy -vbsf h264_mp4toannexb -map 0 -f segment -segment_list D:\\users\\Destop\\output\\output.m3u8 -segment_time 10 D:\\users\\Destop\\output\\out%03d.ts");
 
         //table.add();

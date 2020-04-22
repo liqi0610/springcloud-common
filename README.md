@@ -83,3 +83,21 @@ a.forEach(System.out::print);
 
 下图是运用flatMap的stream运行流程:
 ![flatMap](./doc/flat.png)
+
+## SpringBoot获得Jar中的资源的方法
+
+要获取`Jar`中的文件不能使用`ResourceUtils.getFile()`来获取文件，因为被打成了`Jar`文件。
+只能通过流来获取。如下：
+
+1. ClassPathResource
+```java
+ClassPathResource resource = new ClassPathResource("videoToM3u8.lua");
+InputStream stream = resource.getInputStream();
+```
+
+2. ResourceLoader
+```java
+ResourceLoader loader = new DefaultResourceLoader();
+Resource res = loader.getResource("classpath:videoToM3u8.lua");
+InputStream inputStream = res.getInputStream();
+```
