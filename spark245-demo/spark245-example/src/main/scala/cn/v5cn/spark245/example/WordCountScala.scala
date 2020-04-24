@@ -19,7 +19,7 @@ object WordCountScala {
     val lines: RDD[String] = sc.textFile(args(0))
 
     // 4. 第四步：切分压平，RDD中是一个一个的单词
-    val words: RDD[String] = lines.flatMap(_.split("\\W+"))
+    val words: RDD[String] = lines.flatMap(_.split("\\s+"))
 
     // 5. 单词计数，RDD中是单词和个数
     val wordsAndOne: RDD[(String, Int)] = words.map((_,1))
