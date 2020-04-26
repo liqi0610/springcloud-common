@@ -1,5 +1,6 @@
 package cn.v5cn.others.jython_and_luaj;
 
+import cn.hutool.json.*;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
@@ -20,17 +21,16 @@ public class LuaJDemo {
         Globals globals = JsePlatform.standardGlobals();
         LuaValue chunk = globals.loadfile(path).call();
 
-        LuaValue func = chunk.get(LuaValue.valueOf("commonds"));
-        LuaTable table = LuaTable.tableOf();
+        LuaValue func = chunk.get(LuaValue.valueOf("videoInfo"));
 
         LuaValue params = new LuaTable();
-        params.set("cmd1","/Users/zhuyanwei/software/ffmpeg/ffmpeg -i /Users/zhuyanwei/software/ffmpeg/1.mp4 -threads 2 -vf scale=1280:-2 -c:v libx264 -preset fast -crf 24 /Users/zhuyanwei/software/ffmpeg/FFMPEG_1280X720.mp4");
-        //params.set("cmd2","D:\\software\\ffmpeg-20200113-7225479-win64-static\\bin\\ffmpeg -i D:\\users\\Destop\\output\\FFMPEG_1280X720.mp4 -codec copy -vbsf h264_mp4toannexb -map 0 -f segment -segment_list D:\\users\\Destop\\output\\output.m3u8 -segment_time 10 D:\\users\\Destop\\output\\out%03d.ts");
+        params.set("cmd","D:\\software\\ffmpeg-20200113-7225479-win64-static\\bin\\ffprobe");
+        params.set("filePath","D:\\users\\Destop\\20200420154536.mp4");
 
-        //table.add();
-        //table.add();
-        boolean result = func.call(params).toboolean();
+        String result = func.call(params).toString();
+//        JSONObject jsonObject = JSONUtil.parseObj(result);
+//        Object duration = jsonObject.getJSONObject("format").get("duration");
 
-        System.out.println(result);
+        System.out.println(result+"--------------" + 0);
     }
 }
