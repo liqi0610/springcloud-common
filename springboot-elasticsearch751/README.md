@@ -1,4 +1,8 @@
-## Elasticsearch7.5.1 docker 安装
+## docker-compose安装
+```shell script
+curl -L https://get.daocloud.io/docker/compose/releases/download/1.25.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose;
+```
+## Elasticsearch7.5.1 docker-compose安装ES
 ```yaml
 version: '2.2'
 services:
