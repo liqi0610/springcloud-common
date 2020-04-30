@@ -2,22 +2,7 @@
 ```shell script
 curl -L https://get.daocloud.io/docker/compose/releases/download/1.25.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose;
 ```
-### 安装异常
-1. vm.max_map_count
-```text
-[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
-```
-解决：
-先要切换到root用户；
-然后可以执行以下命令，设置 vm.max_map_count ，但是重启后又会恢复为原值。
-```shell script
-sysctl -w vm.max_map_count=262144
-```
-持久性的做法是在 /etc/sysctl.conf 文件中修改 vm.max_map_count 参数：
-```shell script
-echo "vm.max_map_count=262144" > /etc/sysctl.conf
-sysctl -p
-```
+
 ## Elasticsearch7.5.1 docker-compose安装ES
 ```yaml
 version: '2.2'
@@ -93,6 +78,23 @@ networks:
   es7net:
     driver: bridge
 ```
+### 安装ES异常
+1. vm.max_map_count
+```text
+[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+```
+解决：
+先要切换到root用户；
+然后可以执行以下命令，设置 vm.max_map_count ，但是重启后又会恢复为原值。
+```shell script
+sysctl -w vm.max_map_count=262144
+```
+持久性的做法是在 /etc/sysctl.conf 文件中修改 vm.max_map_count 参数：
+```shell script
+echo "vm.max_map_count=262144" > /etc/sysctl.conf
+sysctl -p
+```
+
 ## 索引创建和查询
 ```json
 # 查看插件列表
