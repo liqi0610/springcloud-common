@@ -20,6 +20,7 @@ public class ResultUtil {
         response.setStatus(httpStatus.value());
         response.getWriter().write(JSONObject.toJSONString(resultJsonMap));
     }
+    
     public static void result(HttpServletResponse response, HttpStatus httpStatus,String code, String message) throws IOException {
         Map<String,String> resultMap = new HashMap<>();
         resultMap.put("code",code);
