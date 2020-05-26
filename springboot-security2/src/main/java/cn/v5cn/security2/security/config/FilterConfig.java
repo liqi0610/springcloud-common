@@ -13,7 +13,7 @@
 //    public FilterRegistrationBean<AuthorizationFilter> filterRegistrationBean(){
 //        FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
 //        registrationBean.setFilter(authorizationFilter());
-//        registrationBean.setOrder(0);
+//        registrationBean.setOrder(1);
 //        return registrationBean;
 //    }
 //

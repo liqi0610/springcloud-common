@@ -4,6 +4,7 @@ import cn.v5cn.security2.security.service.UserInfoService;
 import cn.v5cn.security2.security.util.ResultUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,7 @@ import java.io.IOException;
  * @date 2020-05-26 21:32
  */
 @Component
+@Order(0)
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
