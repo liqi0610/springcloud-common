@@ -51,6 +51,7 @@
         <module>netty-rpc-demo</module>
         <module>springboot-xxl-job</module>
         <module>spark245-demo</module>
+        <module>springboot-security2</module>
     </modules>
 
 	<properties>

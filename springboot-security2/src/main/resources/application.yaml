@@ -1,0 +1,9 @@
+server:
+  port: 8911
+
+spring:
+  application:
+    name: springboot-security2
+
+jwt:
+  secret: javainuse
