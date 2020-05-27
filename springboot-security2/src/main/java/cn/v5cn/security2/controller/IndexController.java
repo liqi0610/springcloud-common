@@ -1,6 +1,6 @@
 package cn.v5cn.security2.controller;
 
-import cn.v5cn.security2.security.annotation.PreAuth;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IndexController {
 
-    @PreAuth("hasAuthority('user_list')")
+    @PreAuthorize("hasAuthority('user_list')")
     @RequestMapping({ "/hello" })
     public String firstPage() {
         return "Hello World";

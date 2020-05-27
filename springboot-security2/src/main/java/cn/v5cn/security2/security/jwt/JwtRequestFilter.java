@@ -3,13 +3,14 @@ package cn.v5cn.security2.security.jwt;
 import cn.v5cn.security2.security.service.UserInfoService;
 import cn.v5cn.security2.security.util.ResultUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,8 +25,6 @@ import java.io.IOException;
  * @version 1.0
  * @date 2020-05-26 21:32
  */
-@Component
-@Order(0)
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -33,8 +32,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    private RequestMatcher authenticationRequestMatcher;
+
+    public JwtRequestFilter() {
+    }
+
+    public JwtRequestFilter(RequestMatcher authenticationRequestMatcher) {
+        this.authenticationRequestMatcher = authenticationRequestMatcher;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        //过滤掉不需要token验证的url
+        if(authenticationRequestMatcher != null && !authenticationRequestMatcher.matches(request)){
+            chain.doFilter(request, response);
+            return;
+        }
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;

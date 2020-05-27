@@ -28,7 +28,7 @@ public class UserInfoService implements UserDetailsService {
         SimpleGrantedAuthority authority2 = new SimpleGrantedAuthority();
         authority2.setAuthority("user_add");
 
-//        authorityList.add(authority1);
+        authorityList.add(authority1);
         authorityList.add(authority2);
         return new UserDetailsImpl("zhangsan","$2a$10$5uqHclwPzmdLJbkjfsoJIu4BjHP.UCbB7p4Ok1zwzsRA7X.VasqQ.",authorityList);
     }
