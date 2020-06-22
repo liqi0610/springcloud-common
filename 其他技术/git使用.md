@@ -27,3 +27,7 @@ $ git commit -m "fix bug 101"
 [廖雪峰Bug分支](https://www.liaoxuefeng.com/wiki/896043488029600/900388704535136)
 
 [git | bug分支](https://www.jianshu.com/p/af74d6374e28)
+
+## 回归指定文件
+先执行`git status`查看修改过的文件。
+在执行`git checkout -- serivice/url/url_service.js`其中`serivice/url/url_service.js`为需要还原的文件。
